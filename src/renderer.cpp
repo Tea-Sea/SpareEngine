@@ -25,6 +25,22 @@ renderer::renderer()
 
 }
 
+// // TODO: call this when window is resized
+// void framebuffer_size_callback(SDL_Window* gWindow, int width, int height)
+// {
+//     glViewport(0, 0, width, height);
+// }  
+
+bool frame_resize_event(void *userdata, SDL_Event *event) {
+    if (event->type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED) {
+        int h;
+        int w;
+        SDL_GetWindowSize(gWindow, &w, &h);
+        glViewport(0, 0, w, h); // will be executed when SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED event occures
+    }
+    return true;
+}
+
 /* Function Implementations */
 bool renderer::initialise()
 {
@@ -56,6 +72,7 @@ bool renderer::initialise()
             SDL_Log("Failed to initialize GLAD\n"); 
             success = false;
         }
+        SDL_AddEventWatch(frame_resize_event, NULL);
         glViewport(0, 0, 800, 600);
 
     return success;
