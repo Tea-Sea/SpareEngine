@@ -7,8 +7,8 @@
 
 /* Constants */
 //Screen dimension constants
-constexpr int kScreenWidth{ 640 };
-constexpr int kScreenHeight{ 480 };
+constexpr int kScreenWidth{ 800 };
+constexpr int kScreenHeight{ 600 };
 
 /* Global Variables */
 //The window we'll be rendering to
@@ -26,7 +26,7 @@ renderer::renderer()
 }
 
 /* Function Implementations */
-bool renderer::init()
+bool renderer::initialise()
 {
     //Initialization flag
     bool success{ true };
@@ -40,7 +40,7 @@ bool renderer::init()
     else
     {
         //Create window
-        if( gWindow = SDL_CreateWindow( "Hello Window", kScreenWidth, kScreenHeight, 0 ); gWindow == nullptr )
+        if( gWindow = SDL_CreateWindow( "Hello Window", kScreenWidth, kScreenHeight, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL); gWindow == nullptr )
         {
             SDL_Log( "Window could not be created! SDL error: %s\n", SDL_GetError() );
             success = false;
@@ -51,9 +51,17 @@ bool renderer::init()
             gScreenSurface = SDL_GetWindowSurface( gWindow );
         }
     }
+    if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
+        {
+            SDL_Log("Failed to initialize GLAD\n"); 
+            success = false;
+        }
+        glViewport(0, 0, 800, 600);
 
     return success;
 }
+
+
 
 void renderer::close()
 {
@@ -75,7 +83,7 @@ int renderer::open_window(){
         int exitCode{ 0 };
 
         //Initialize
-        if( !init() )
+        if( !initialise() )
         {
             SDL_Log( "Unable to initialize program!\n" );
             exitCode = 1;
@@ -113,7 +121,6 @@ int renderer::open_window(){
                 SDL_UpdateWindowSurface( gWindow );
             } 
         }
-    
         //Clean up
         close();
         return exitCode;

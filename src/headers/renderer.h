@@ -6,7 +6,8 @@ class renderer
 
 		// COMPONENTS
 	
-        bool init(); //Return curent display info to be rendered
+        bool initialise(); //Return curent display info to be rendered
+		// void framebuffer_size_callback(SDL_Window* gWindow, int width, int height);
 
 	public:
 	renderer();
