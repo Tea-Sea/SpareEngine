@@ -20,12 +20,13 @@ SDL_Surface* gScreenSurface{ nullptr };
 //The image we will load and show on the screen
 SDL_Surface* gHelloWorld{ nullptr };
 
-renderer::renderer() {
+renderer::renderer()
+{
 
 }
 
 /* Function Implementations */
-bool renderer::open_window()
+bool renderer::init()
 {
     //Initialization flag
     bool success{ true };
@@ -39,7 +40,7 @@ bool renderer::open_window()
     else
     {
         //Create window
-        if( gWindow = SDL_CreateWindow( "SDL3 Tutorial: Hello SDL3", kScreenWidth, kScreenHeight, 0 ); gWindow == nullptr )
+        if( gWindow = SDL_CreateWindow( "Hello Window", kScreenWidth, kScreenHeight, 0 ); gWindow == nullptr )
         {
             SDL_Log( "Window could not be created! SDL error: %s\n", SDL_GetError() );
             success = false;
@@ -53,5 +54,71 @@ bool renderer::open_window()
 
     return success;
 }
+
+void renderer::close()
+{
+    //Clean up surface
+    SDL_DestroySurface( gHelloWorld );
+    gHelloWorld = nullptr;
+    
+    //Destroy window
+    SDL_DestroyWindow( gWindow );
+    gWindow = nullptr;
+    gScreenSurface = nullptr;
+
+    //Quit SDL subsystems
+    SDL_Quit();
+}
+
+int renderer::open_window(){
+        //Final exit code
+        int exitCode{ 0 };
+
+        //Initialize
+        if( !init() )
+        {
+            SDL_Log( "Unable to initialize program!\n" );
+            exitCode = 1;
+        }
+        else
+        {
+            //The quit flag
+            bool quit{ false };
+    
+            //The event data
+            SDL_Event e;
+            SDL_zero( e );
+            
+            //The main loop
+            while( quit == false )
+            {
+                //Get event data
+                while( SDL_PollEvent( &e ) )
+                {
+                    //If event is quit type
+                    if( e.type == SDL_EVENT_QUIT )
+                    {
+                        //End the main loop
+                        quit = true;
+                    }
+                }
+    
+                //Fill the surface white
+                SDL_FillSurfaceRect( gScreenSurface, nullptr, SDL_MapSurfaceRGB( gScreenSurface, 0xFF, 0xFF, 0xFF ) );
+            
+                //Render image on screen
+                SDL_BlitSurface( gHelloWorld, nullptr, gScreenSurface, nullptr );
+    
+                //Update the surface
+                SDL_UpdateWindowSurface( gWindow );
+            } 
+        }
+    
+        //Clean up
+        close();
+        return exitCode;
+}
+
+
 
 

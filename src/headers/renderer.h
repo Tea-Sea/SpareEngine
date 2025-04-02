@@ -10,5 +10,6 @@ class renderer
 
 	public:
 	renderer();
-	bool open_window();
+	int open_window();
+	void close();
 };
