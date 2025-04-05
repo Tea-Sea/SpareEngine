@@ -14,4 +14,5 @@ class renderer
 	renderer();
 	int open_window();
 	void close();
+	void process_input(SDL_Window* gwindow);
 };

@@ -78,7 +78,10 @@ bool renderer::initialise()
     return success;
 }
 
-
+void process_input(SDL_Window* gwindow)
+{
+    
+}
 
 void renderer::close()
 {
@@ -120,11 +123,55 @@ int renderer::open_window(){
                 //Get event data
                 while( SDL_PollEvent( &e ) )
                 {
-                    //If event is quit type
-                    if( e.type == SDL_EVENT_QUIT )
-                    {
-                        //End the main loop
-                        quit = true;
+                    switch (e.type) {
+                        case SDL_EVENT_QUIT:
+                        {
+                            //End the main loop
+                            quit = true;
+                        }
+                    /* Look for a keypress */
+                case SDL_EVENT_KEY_DOWN:
+                    /* Check the SDLKey values and move change the coords */
+                    switch( e.key.key ){
+                        case SDLK_LEFT:
+                            SDL_Log("LEFT PRESSED\n");
+                            break;
+                        case SDLK_RIGHT:
+                        SDL_Log("RIGHT PRESSED\n");
+                            break;
+                        case SDLK_UP:
+                        SDL_Log("UP PRESSED\n");
+                            break;
+                        case SDLK_DOWN:
+                        SDL_Log("DOWN PRESSED\n");
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                /* We must also use the SDL_KEYUP events to zero the x */
+                /* and y velocity variables. But we must also be       */
+                /* careful not to zero the velocities when we shouldn't*/
+                case SDL_EVENT_KEY_UP:
+                    switch( e.key.key ){
+                        case SDLK_LEFT:
+                        SDL_Log("LEFT RELEASED\n");
+                            break;
+                        case SDLK_RIGHT:
+                        SDL_Log("RIGHT RELEASED\n");
+                            break;
+                        case SDLK_UP:
+                        SDL_Log("UP RELEASED\n");
+                            break;
+                        case SDLK_DOWN:
+                        SDL_Log("DOWN RELEASED\n");
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                break;
                     }
                 }
     
