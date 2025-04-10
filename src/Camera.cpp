@@ -1,9 +1,9 @@
-#include "headers/GameObject.hpp"
+#include "headers/Camera.hpp"
 
-GameObject::GameObject()
+Camera::Camera()
 {
 }
 
-GameObject::~GameObject()
+Camera::~Camera()
 {
 }

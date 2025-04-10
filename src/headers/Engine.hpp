@@ -23,8 +23,6 @@ class Engine
         
         static Engine& getInstance();   
         
-        //bool Engine::frame_resize_event(void *userdata, SDL_Event *event);
-        
         float getDeltaTime() const;
         
         int getWidth() const;

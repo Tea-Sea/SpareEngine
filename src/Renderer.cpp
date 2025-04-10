@@ -2,18 +2,14 @@
 
 #include <stdexcept>
 
+
 Renderer::Renderer(SDL_Window* window)
 {
-    // Create renderer
-    renderer = SDL_CreateRenderer(window, NULL);
-    if (renderer == nullptr) {
-        throw std::runtime_error("Failed to create a renderer for the window.");
-    }
+    
 }
 
 Renderer::~Renderer()
 {
-    SDL_DestroyRenderer(renderer);
 }
 
 // --- 2D ---

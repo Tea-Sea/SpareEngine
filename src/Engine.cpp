@@ -1,6 +1,5 @@
 #include "headers/Engine.hpp"
 
-#include <glad/glad.h>
 #include <stdexcept>
 
 Engine* Engine::instance = nullptr;
@@ -23,19 +22,8 @@ Engine::Engine(const std::string& title, int width, int height)
         throw std::logic_error("Failed to initialise SDL library.");
     }
 
-    // TODO: Check MIX_Init
-    
-    if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
-        {
-            throw std::runtime_error("Failed to initialise GLAD."); 
-        }
-    glViewport(0, 0, 800, 600);
-        
-        
-        // TODO: Add event to watch for window resize
-        //SDL_AddEventWatch(frame_resize_event, NULL);
+    // TODO: Check MIX_Init       
 
-        //Renderer& renderer = Renderer();
 }
 
 Engine::~Engine()
@@ -43,6 +31,7 @@ Engine::~Engine()
     m_renderer.~Renderer();
     m_windowManager.~WindowManager();
     m_inputManager.~InputManager();
+    SDL_Quit();
 }
 
 Engine& Engine::getInstance() 

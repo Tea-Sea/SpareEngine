@@ -3,6 +3,7 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <glad/glad.h>
 #include <string>
 
 class WindowManager
@@ -16,7 +17,7 @@ class WindowManager
 
         SDL_Window* getWindow();
         
-        //bool Engine::frame_resize_event(void *userdata, SDL_Event *event);
+        static bool frame_resize_event(void *userdata, SDL_Event *event);
 
         float getDeltaTime() const;
 
@@ -29,6 +30,8 @@ class WindowManager
         void calculateDeltaTime();
 
         SDL_Window* window;
+
+        SDL_GLContext glContext;
 
         int frameStart;
 
