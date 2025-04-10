@@ -10,7 +10,7 @@
                 "${fileDirname}/*.cpp",
                 "${fileDirname}/*.c",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}",
+                "${fileDirname}/prog",
                 "-lSDL3"
             ],
             "options": {

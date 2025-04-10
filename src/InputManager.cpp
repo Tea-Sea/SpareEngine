@@ -1,15 +1,4 @@
-#include "headers/inputManager.hpp"
-
-#include <iostream>
-
-
-
-InputManager InputManager::instance;
-
-InputManager& InputManager::GetInstance() {
-    return instance;
-}
-
+#include "headers/InputManager.hpp"
 
 InputManager::InputManager()
 {
@@ -19,15 +8,13 @@ InputManager::~InputManager()
 {
 }
 
-void InputManager::Update()
+void InputManager::update()
 {
-    //The main loop
-    
     //The event data
     SDL_Event e;
     
     //Get event data
-    while( SDL_PollEvent( &e ) )
+    while(SDL_PollEvent(&e) )
     {
         switch (e.type)
         {
@@ -47,8 +34,8 @@ void InputManager::Update()
             break;
             /* Look for a keypress */
             case SDL_EVENT_KEY_DOWN:
-                /* Check the SDLKey values and move change the coords */
-                switch( e.key.key )
+                /* Check the SDLKey values */
+                switch(e.key.key)
                 {
                     case SDLK_UP:
                     case SDLK_W:
@@ -78,9 +65,7 @@ void InputManager::Update()
                     break;
                 }
                 break;
-            /* We must also use the SDL_KEYUP events to zero the x */
-            /* and y velocity variables. But we must also be       */
-            /* careful not to zero the velocities when we shouldn't*/
+            // KEY RELEASES
             case SDL_EVENT_KEY_UP:
                 switch( e.key.key )
                 {
@@ -110,7 +95,7 @@ void InputManager::Update()
     }
 }
 
-bool InputManager::WasQuitRequested() const
+bool InputManager::getQuitRequested() const
 {
     return quitRequest;
 }
