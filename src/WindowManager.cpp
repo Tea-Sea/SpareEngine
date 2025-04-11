@@ -1,6 +1,5 @@
 #include "headers/WindowManager.hpp"
 
-#include <glad/glad.h>
 #include <stdexcept>
 #include <iostream>
 

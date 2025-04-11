@@ -27,9 +27,9 @@ void InputManager::update()
             {
                 // Check relative mouse states
                 float deltax = 0, deltay =0;
-                SDL_Log("MOUSE\n");
                 auto r = SDL_GetRelativeMouseState(&deltax, &deltay);
-                SDL_Log("%F, %F \n", deltax, deltay);
+                // SDL_Log("MOUSE\n");
+                // SDL_Log("%F, %F \n", deltax, deltay);
             }
             break;
             /* Look for a keypress */

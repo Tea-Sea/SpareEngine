@@ -64,6 +64,8 @@ bool Engine::run()
     while (!m_inputManager.getQuitRequested())
     {
         m_inputManager.update();
+
+        m_renderer.renderLoop(m_windowManager.getWindow());
         
         SDL_Delay(0.5);
     }

@@ -14,6 +14,8 @@ class Renderer
 		Renderer(SDL_Window* window);
 		~Renderer();
 
+		bool renderLoop(SDL_Window* window);
+
 		// 2D
 		bool drawPixel(Vector2 &pos, int colour);
 		bool drawTriangle(Vector2 &p1, Vector2 &p2, Vector2 &p3, int colour);
@@ -26,6 +28,11 @@ class Renderer
 	private:
 
 	SDL_Renderer* renderer;
+
+	unsigned int shaderProgram;
+
+	unsigned int VAO;
+
 		
 
 };
