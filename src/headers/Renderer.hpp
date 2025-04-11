@@ -1,5 +1,4 @@
-#ifndef RENDERER_H
-#define RENDERER_H
+#pragma once
 
 #include "../utils/Geometry.hpp"
 
@@ -36,5 +35,3 @@ class Renderer
 		
 
 };
-
-#endif

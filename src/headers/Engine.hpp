@@ -1,5 +1,4 @@
-#ifndef GAME_H
-#define GAME_H
+#pragma once
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
@@ -53,5 +52,3 @@ class Engine
 
         int height;
 };
-
-#endif

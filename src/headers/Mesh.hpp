@@ -1,5 +1,4 @@
-#ifndef MESH_H
-#define MESH_H
+#pragma once
 
 #include <vector>
 
@@ -20,5 +19,3 @@ class Mesh
     std::vector<int> indices;
 
 };
-
-#endif

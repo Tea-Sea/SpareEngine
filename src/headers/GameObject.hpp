@@ -1,22 +1,20 @@
-#ifndef GAMEOBJECT_H
-#define GAMEOBJECT_H
+#pragma once
 
-#include "MeshComponent.hpp"
+#include <glm/glm.hpp> 
 
-class GameObject
-{
-	public:
-	
-		GameObject();
+class GameObject {
 
-		~GameObject();
+public:
+    // Constructor to initialize the position
+    GameObject(glm::vec3 position);
 
-        MeshComponent* getMeshComponent();
-		
-	private:
+    glm::vec3 getPosition();
 
-    MeshComponent* meshComponent;
+    void setPosition(const glm::vec3& newPosition);
+    
+    // Virtual destructor to allow proper cleanup of derived classes
+    virtual ~GameObject();
 
+protected:
+    glm::vec3 position;  // Common position for all objects
 };
-
-#endif

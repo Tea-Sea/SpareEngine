@@ -1,23 +1,29 @@
-#ifndef INPUT_H
-#define INPUT_H
+#pragma once
+
+#include "Scene.hpp"
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-class InputManager
+
+class SceneManager
 {
 	public:
 	
-		InputManager();
-
-		~InputManager();
-		
 		void update();
-
-		bool getQuitRequested() const;
 		
+		bool getQuitRequested() const;
+
+		static SceneManager& getSceneManager();
+
+		Scene currentScene;
+	
 	private:
+	
+		SceneManager();
+
+		~SceneManager();
+
+		static SceneManager* instance;
 
 		bool quitRequest;
 };
-
-#endif

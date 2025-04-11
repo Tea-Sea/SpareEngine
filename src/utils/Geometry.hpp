@@ -1,5 +1,4 @@
-#ifndef GEOMETRY_HPP
-#define GEOMETRY_HPP
+#pragma once
 
 struct Vector2
 {
@@ -22,5 +21,3 @@ struct Vertex
 {
     // TODO: add vertex info
 };
-
-#endif

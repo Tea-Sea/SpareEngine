@@ -1,6 +1,4 @@
-#ifndef CAMERA_H
-#define CAMERA_H
-
+#pragma once
 
 class Camera
 {
@@ -15,5 +13,3 @@ class Camera
 
 
 };
-
-#endif

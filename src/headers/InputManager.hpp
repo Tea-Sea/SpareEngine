@@ -1,5 +1,4 @@
-#ifndef INPUT_H
-#define INPUT_H
+#pragma once
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
@@ -19,5 +18,3 @@ class InputManager
 
 		bool quitRequest;
 };
-
-#endif

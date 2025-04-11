@@ -1,5 +1,4 @@
-#ifndef MESHCOMPONENT_H
-#define MESHCOMPONENT_H
+#pragma once
 
 #include "Mesh.hpp"
 
@@ -18,5 +17,3 @@ class MeshComponent
     Mesh* mesh;
 
 };
-
-#endif

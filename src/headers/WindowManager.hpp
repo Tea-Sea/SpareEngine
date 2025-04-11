@@ -1,5 +1,4 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#pragma once
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
@@ -41,5 +40,3 @@ class WindowManager
 
         int height;
 };
-
-#endif

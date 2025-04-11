@@ -67,18 +67,23 @@ Renderer::Renderer(SDL_Window* window)
     };  
 
 
+    // Initialise, genererate Vertex Buffer. bind to the OpenGL array buffer
     unsigned int VBO;
     glGenBuffers(1, &VBO);  
     glBindBuffer(GL_ARRAY_BUFFER, VBO); 
 
+    // Specify vertices as the data to input into the vertex buffer
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+    // Initialise shader
     unsigned int vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
+    // Specify our gross shader code as the source for the shader, and compile
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
 
+    // Test if compiled correctly
     int  success;
     char infoLog[512];
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
@@ -89,11 +94,13 @@ Renderer::Renderer(SDL_Window* window)
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
+    // Initialise and compile our fancy shader
     unsigned int fragmentShader;
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
+    // Test if compiled correctly
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
 
     if(!success)
@@ -102,23 +109,28 @@ Renderer::Renderer(SDL_Window* window)
         std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
-    // unsigned int shaderProgram;
+    // Create program object
     shaderProgram = glCreateProgram();
 
+    // Attach shaders
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);
 
+    // Test
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
     if(!success) {
         glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
     }
 
+    // Activate our new object
     glUseProgram(shaderProgram);
 
+    // Delete the compiled shaders
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader); 
 
+    // 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);  
 
