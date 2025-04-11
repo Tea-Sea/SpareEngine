@@ -11,13 +11,51 @@ const char *vertexShaderSource = "#version 320 es\n"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
     "}\0";
 
+// const char *fragmentShaderSource = "#version 320 es\n"
+//     "precision mediump float;\n"
+//     "out vec4 FragColor;\n"
+//     "void main()\n"
+//     "{\n"
+//     "    FragColor = vec4(1.0f, 0.2f, 0.1f, 1.0f);\n"
+//     "}\0";
 const char *fragmentShaderSource = "#version 320 es\n"
-    "precision mediump float;\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "    FragColor = vec4(1.0f, 0.2f, 0.1f, 1.0f);\n"
-    "}\0";
+"precision mediump float;\n"
+"\n"
+"out vec4 fragColor;\n"
+"\n"
+"uniform vec2 iResolution;\n"
+"uniform float iTime;\n"
+"\n"
+"vec3 palette(float t) {\n"
+"    vec3 a = vec3(0.5, 0.5, 0.5);\n"
+"    vec3 b = vec3(0.5, 0.5, 0.5);\n"
+"    vec3 c = vec3(1.0, 1.0, 1.0);\n"
+"    vec3 d = vec3(0.263, 0.416, 0.557);\n"
+"\n"
+"    return a + b * cos(6.28318 * (c * t + d));\n"
+"}\n"
+"\n"
+"void main() {\n"
+"    vec2 fragCoord = gl_FragCoord.xy;\n"
+"    vec2 uv = (fragCoord * 2.0 - iResolution) / iResolution.y;\n"
+"    vec2 uv0 = uv;\n"
+"    vec3 finalColor = vec3(0.0);\n"
+"\n"
+"    for (float i = 0.0; i < 4.0; i++) {\n"
+"        uv = fract(uv * 1.5) - 0.5;\n"
+"\n"
+"        float d = length(uv) * exp(-length(uv0));\n"
+"        vec3 col = palette(length(uv0) + i * 0.4 + iTime * 0.4);\n"
+"\n"
+"        d = sin(d * 8.0 + iTime) / 8.0;\n"
+"        d = abs(d);\n"
+"        d = pow(0.01 / d, 1.2);\n"
+"\n"
+"        finalColor += col * d;\n"
+"    }\n"
+"\n"
+"    fragColor = vec4(finalColor, 1.0);\n"
+"}\n";
 
 
 Renderer::Renderer(SDL_Window* window)
@@ -96,13 +134,6 @@ Renderer::Renderer(SDL_Window* window)
     // 3. then set our vertex attributes pointers
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);  
-
-    
-    // // ..:: Drawing code (in render loop) :: ..
-    // // 4. draw the object
-    // glUseProgram(shaderProgram);
-    // glBindVertexArray(VAO);
-    // someOpenGLFunctionThatDrawsOurTriangle();  
 }
 
 Renderer::~Renderer()
@@ -113,6 +144,12 @@ Renderer::~Renderer()
 
 bool Renderer::renderLoop(SDL_Window* window)
 {
+    GLint resLoc = glGetUniformLocation(shaderProgram, "iResolution");
+    glUniform2f(resLoc, 600, 800);
+
+    GLint timeLoc = glGetUniformLocation(shaderProgram, "iTime");
+    glUniform1f(timeLoc, (SDL_GetTicks() / 1000.0f));
+
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 

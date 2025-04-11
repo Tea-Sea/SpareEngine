@@ -32,6 +32,31 @@ void InputManager::update()
                 // SDL_Log("%F, %F \n", deltax, deltay);
             }
             break;
+            case SDL_EVENT_MOUSE_BUTTON_DOWN:
+            {
+                switch(e.button.button)
+                {
+                    case 1:
+                    {
+                        SDL_Log("Left Click\n");
+                    }
+                    break;
+                    case 2:
+                    {
+                        SDL_Log("Middle Click\n");
+                    }
+                    break;
+                    case 3:
+                    {
+                        SDL_Log("Right Click\n");
+                    }
+                    break;
+                    default:
+                    break;
+                }
+                
+            }
+            break;
             /* Look for a keypress */
             case SDL_EVENT_KEY_DOWN:
                 /* Check the SDLKey values */
