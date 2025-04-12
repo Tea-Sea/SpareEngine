@@ -7,7 +7,8 @@ Engine* Engine::instance = nullptr;
 Engine::Engine(const std::string& title, int width, int height) 
     :   m_windowManager(title.c_str(), width, height),
         m_renderer(m_windowManager.getWindow()),
-        m_inputManager()
+        m_inputManager(),
+        m_sceneManager()
 {
     // Check if engine instance already exists
     if (instance == nullptr) {

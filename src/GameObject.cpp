@@ -1,7 +1,13 @@
 #include "headers/GameObject.hpp"
 
-GameObject::GameObject(glm::vec3 position = glm::vec3(0)) : position(position)
+GameObject::GameObject() : position(position)
 {
+
+}
+
+GameObject::GameObject(glm::vec3 position) : position(position)
+{
+
 }
 
 GameObject::~GameObject()

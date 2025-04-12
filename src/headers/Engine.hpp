@@ -7,6 +7,7 @@
 #include "WindowManager.hpp"
 #include "Renderer.hpp"
 #include "InputManager.hpp"
+#include "SceneManager.hpp"
 
 class Engine
 {
@@ -19,6 +20,8 @@ class Engine
         Renderer* getRenderer();
         
         InputManager* getInputManager();
+        
+        SceneManager* getSceneManager();
         
         static Engine& getInstance();   
         
@@ -43,6 +46,8 @@ class Engine
         Renderer m_renderer;
 
         InputManager m_inputManager;
+
+        SceneManager m_sceneManager;
 
         int frameStart;
 

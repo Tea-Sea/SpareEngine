@@ -10,7 +10,7 @@ class MeshComponent
 
 		~MeshComponent();
 
-        MeshComponent getMeshComponent();
+        MeshComponent* getMeshComponent();
 		
 	private:
 

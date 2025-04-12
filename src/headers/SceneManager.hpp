@@ -9,21 +9,12 @@ class SceneManager
 {
 	public:
 	
-		void update();
-		
-		bool getQuitRequested() const;
-
-		static SceneManager& getSceneManager();
-
-		Scene currentScene;
-	
-	private:
-	
 		SceneManager();
 
 		~SceneManager();
 
-		static SceneManager* instance;
-
-		bool quitRequest;
+		Scene* currentScene;
+	
+	private:
+	
 };
