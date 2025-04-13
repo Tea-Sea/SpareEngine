@@ -3,7 +3,7 @@
 
     TestObject::TestObject()
     {
-        MeshComponent* meshComponent = new MeshComponent();
+        RenderableComponent* renderableComponent = new RenderableComponent();
     }
 
     TestObject::~TestObject()

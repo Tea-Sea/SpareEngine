@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GameObject.hpp"
-#include "MeshComponent.hpp"
+#include "RenderableComponent.hpp"
 
 #include <glm/glm.hpp> 
 
@@ -18,6 +18,6 @@ public:
     // Virtual destructor to allow proper cleanup of derived classes
     ~TestObject();
 
-    MeshComponent meshComponent;
+    RenderableComponent meshComponent;
 
 };

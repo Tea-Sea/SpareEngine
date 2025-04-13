@@ -4,6 +4,7 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <vector>
 
 class SceneManager
 {
@@ -13,8 +14,14 @@ class SceneManager
 
 		~SceneManager();
 
-		Scene* currentScene;
-	
+		Scene* getCurrentScene();
+
+		bool loadScene(Scene* sceneToLoad);
+
 	private:
+
+	Scene* currentScene;
+	// vector<Mesh> 
+
 	
 };
