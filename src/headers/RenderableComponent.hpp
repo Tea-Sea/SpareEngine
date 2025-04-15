@@ -12,6 +12,8 @@ class RenderableComponent
 		~RenderableComponent();
 
         Mesh* getMesh();
+
+        Shader* getShader();
 		
 	private:
 

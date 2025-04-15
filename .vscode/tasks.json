@@ -11,7 +11,7 @@
                 "${fileDirname}/*.c",
                 "-o",
                 "${fileDirname}/prog",
-                "-lSDL3"
+                "-lSDL2"
             ],
             "options": {
                 "cwd": "${fileDirname}"

@@ -21,9 +21,13 @@ public:
 
     GLuint getShaderProgram();
 
+    void setMat4(GLchar* property, glm::mat4 matrix);
+
+    void use();
+
 private:
     GLuint vertexShader;
-    
+
     GLuint fragShader;
 
     GLuint shaderProgram;

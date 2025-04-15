@@ -17,12 +17,6 @@ Engine::Engine(const std::string& title, int width, int height)
         throw std::logic_error("Engine constructor called when an instance is already created.");
     }
 
-    // Initialise SDL
-    if( !SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO) )
-    {
-        throw std::logic_error("Failed to initialise SDL library.");
-    }
-
     // TODO: Check MIX_Init       
 
 }
@@ -70,7 +64,12 @@ bool Engine::run()
     // Main Loop
     while (!m_inputManager.getQuitRequested())
     {
-        m_inputManager.update();
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+        m_inputManager.update(event);
+        m_windowManager.update(event);
+    }
+        
 
         m_renderer.renderLoop(m_windowManager.getWindow(), m_sceneManager.getCurrentScene()->getObjectList());
         

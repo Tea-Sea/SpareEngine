@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Shader.hpp"
+
 #include <vector>
 #include <glad/glad.h>
 #include <string>
@@ -21,7 +23,7 @@ class Mesh
         std::vector<float>* getVertices();
         std::vector<int>* getIndices();
 
-        void draw() const;
+        void draw(Shader* shader) const;
 
 	private:
 

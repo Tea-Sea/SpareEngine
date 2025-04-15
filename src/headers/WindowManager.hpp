@@ -1,7 +1,7 @@
 #pragma once
 
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_main.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_main.h>
 #include <glad/glad.h>
 #include <string>
 
@@ -16,7 +16,9 @@ class WindowManager
 
         SDL_Window* getWindow();
         
-        static bool frame_resize_event(void *userdata, SDL_Event *event);
+        static int frame_resize_event(void *userdata, SDL_Event *event);
+
+        void update(SDL_Event event);
 
         float getDeltaTime() const;
 

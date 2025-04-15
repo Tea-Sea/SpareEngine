@@ -32,18 +32,32 @@ bool Renderer::renderLoop(SDL_Window* window, std::vector<std::unique_ptr<GameOb
 {
 
     beginFrame();
-    
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+    // DEBUGGING
     for (const auto& obj : objects)
     {
         if (obj->hasRenderable())
         {
-            obj->getRenderable()->getMesh()->draw();
+            glUniform3f(glGetUniformLocation(obj->getRenderable()->getShader()->getShaderProgram(), "colour"), 5.0f, 0.2f, 0.0f);  // Set wireframe colour
+            obj->getRenderable()->getShader()->use();
+            obj->getRenderable()->getMesh()->draw(obj->getRenderable()->getShader());
         }
     }
-    GLenum err;
-while ((err = glGetError()) != GL_NO_ERROR) {
-    std::cerr << "OpenGL error: " << err << std::endl;
-}
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // Switch to wireframe mode
+    glLineWidth(2.0f);  // Optional: Change line width for better visibility
+
+    for (const auto& obj : objects)
+    {
+        if (obj->hasRenderable())
+        {
+            // Use a different colour for wireframe
+            glUniform3f(glGetUniformLocation(obj->getRenderable()->getShader()->getShaderProgram(), "colour"), 1.0f, 1.0f, 1.0f);  // Set wireframe colour
+            obj->getRenderable()->getShader()->use();
+            obj->getRenderable()->getMesh()->draw(obj->getRenderable()->getShader());
+        }
+    }
+
     // GLint resLoc = glGetUniformLocation(shaderProgram, "iResolution");
     // glUniform2f(resLoc, 600, 800);
 

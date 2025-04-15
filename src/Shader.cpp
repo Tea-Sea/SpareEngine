@@ -33,7 +33,7 @@ Shader::Shader(std::string path)
 
     glm::mat4 model = glm::mat4(1.0f);
     glm::mat4 view = glm::lookAt(
-        glm::vec3(3.0f, 3.0f, 3.0f), // camera position
+        glm::vec3(2.0f, 5.0f, 3.0f), // camera position
         glm::vec3(0.0f, 0.0f, 0.0f), // look at
         glm::vec3(0.0f, 1.0f, 0.0f)  // up vector
     );
@@ -133,5 +133,16 @@ GLuint Shader::createShaderProgram(GLuint vert, GLuint frag)
 GLuint Shader::getShaderProgram()
 {
     return shaderProgram;
+}
+
+void Shader::setMat4(GLchar* property, glm::mat4 matrix)
+{
+    GLint modelLoc = glGetUniformLocation(shaderProgram, property);
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+void Shader::use()
+{
+    glUseProgram(shaderProgram);
 }
 

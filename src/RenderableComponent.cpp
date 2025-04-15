@@ -17,3 +17,8 @@ Mesh* RenderableComponent::getMesh()
 {
     return mesh;
 }
+
+Shader* RenderableComponent::getShader()
+{
+    return shader;
+}

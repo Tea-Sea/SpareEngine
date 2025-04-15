@@ -3,8 +3,8 @@
 #include "../utils/Geometry.hpp"
 #include "GameObject.hpp"
 
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_main.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_main.h>
 #include <glad/glad.h>
 #include <vector>
 #include <memory>
