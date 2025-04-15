@@ -3,173 +3,56 @@
 #include <stdexcept>
 #include <iostream>
 
-// THIS IS GROSS AND JUST FOR TESTING
-const char *vertexShaderSource = "#version 320 es\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
-
-// const char *fragmentShaderSource = "#version 320 es\n"
-//     "precision mediump float;\n"
-//     "out vec4 FragColor;\n"
-//     "void main()\n"
-//     "{\n"
-//     "    FragColor = vec4(1.0f, 0.2f, 0.1f, 1.0f);\n"
-//     "}\0";
-const char *fragmentShaderSource = "#version 320 es\n"
-"precision mediump float;\n"
-"\n"
-"out vec4 fragColor;\n"
-"\n"
-"uniform vec2 iResolution;\n"
-"uniform float iTime;\n"
-"\n"
-"vec3 palette(float t) {\n"
-"    vec3 a = vec3(0.5, 0.5, 0.5);\n"
-"    vec3 b = vec3(0.5, 0.5, 0.5);\n"
-"    vec3 c = vec3(1.0, 1.0, 1.0);\n"
-"    vec3 d = vec3(0.263, 0.416, 0.557);\n"
-"\n"
-"    return a + b * cos(6.28318 * (c * t + d));\n"
-"}\n"
-"\n"
-"void main() {\n"
-"    vec2 fragCoord = gl_FragCoord.xy;\n"
-"    vec2 uv = (fragCoord * 2.0 - iResolution) / iResolution.y;\n"
-"    vec2 uv0 = uv;\n"
-"    vec3 finalColor = vec3(0.0);\n"
-"\n"
-"    for (float i = 0.0; i < 4.0; i++) {\n"
-"        uv = fract(uv * 1.5) - 0.5;\n"
-"\n"
-"        float d = length(uv) * exp(-length(uv0));\n"
-"        vec3 col = palette(length(uv0) + i * 0.4 + iTime * 0.4);\n"
-"\n"
-"        d = sin(d * 8.0 + iTime) / 8.0;\n"
-"        d = abs(d);\n"
-"        d = pow(0.01 / d, 1.2);\n"
-"\n"
-"        finalColor += col * d;\n"
-"    }\n"
-"\n"
-"    fragColor = vec4(finalColor, 1.0);\n"
-"}\n";
-
-
 Renderer::Renderer(SDL_Window* window)
 {
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
-    };  
-
-
-    // Initialise, genererate Vertex Buffer. bind to the OpenGL array buffer
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);  
-    glBindBuffer(GL_ARRAY_BUFFER, VBO); 
-
-    // Specify vertices as the data to input into the vertex buffer
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // Initialise shader
-    unsigned int vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
-    // Specify our gross shader code as the source for the shader, and compile
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-
-    // Test if compiled correctly
-    int  success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-
-    if(!success)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-
-    // Initialise and compile our fancy shader
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    // Test if compiled correctly
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-
-    if(!success)
-    {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-
-    // Create program object
-    shaderProgram = glCreateProgram();
-
-    // Attach shaders
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    // Test
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if(!success) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-    }
-
-    // Activate our new object
-    glUseProgram(shaderProgram);
-
-    // Delete the compiled shaders
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader); 
-
-    // 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);  
-
-    // unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
-
-    // ..:: Initialization code (done once (unless your object frequently changes)) :: ..
-    // 1. bind Vertex Array Object
-    glBindVertexArray(VAO);
-    // 2. copy our vertices array in a buffer for OpenGL to use
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    // 3. then set our vertex attributes pointers
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);  
+    
 }
 
 Renderer::~Renderer()
 {
-    
-
+    glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteProgram(shaderProgram);
 }
 
-bool Renderer::renderLoop(SDL_Window* window)
+void Renderer::beginFrame()
 {
-    GLint resLoc = glGetUniformLocation(shaderProgram, "iResolution");
-    glUniform2f(resLoc, 600, 800);
-
-    GLint timeLoc = glGetUniformLocation(shaderProgram, "iTime");
-    glUniform1f(timeLoc, (SDL_GetTicks() / 1000.0f));
-
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glUseProgram(shaderProgram);
-    glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glEnable(GL_DEPTH_TEST);
+}
 
+void Renderer::endFrame(SDL_Window* window)
+{
     SDL_GL_SwapWindow(window);
+}
+
+bool Renderer::renderLoop(SDL_Window* window, std::vector<std::unique_ptr<GameObject>>& objects)
+{
+
+    beginFrame();
+    
+    for (const auto& obj : objects)
+    {
+        if (obj->hasRenderable())
+        {
+            obj->getRenderable()->getMesh()->draw();
+        }
+    }
+    GLenum err;
+while ((err = glGetError()) != GL_NO_ERROR) {
+    std::cerr << "OpenGL error: " << err << std::endl;
+}
+    // GLint resLoc = glGetUniformLocation(shaderProgram, "iResolution");
+    // glUniform2f(resLoc, 600, 800);
+
+    // GLint timeLoc = glGetUniformLocation(shaderProgram, "iTime");
+    // glUniform1f(timeLoc, (SDL_GetTicks() / 1000.0f));
+
+    glBindVertexArray(0);
+
+    endFrame(window);
     return 1;
 }
 

@@ -3,8 +3,8 @@
 
 SceneManager::SceneManager()
 {
-    Scene* currentScene = new Scene();
-    currentScene->getObjectList();
+    currentScene = new Scene(0);
+    //currentScene->getObjectList();
 }
 
 SceneManager::~SceneManager()

@@ -1,31 +1,43 @@
 #pragma once
 
 #include "GameObject.hpp"
+#include "TestObject.hpp"
 
 #include <glm/glm.hpp> 
 #include <vector>
+#include <memory>
 #include <string>
 
 class Scene
 {
 	public:
 	
-        Scene();
+		Scene(int id);
 		
 		Scene(std::string src);
 
 		~Scene();
 
-		const std::vector<GameObject*>& getObjectList() const;
+		std::vector<std::unique_ptr<GameObject>>& getObjectList();
 
-		GameObject* searchObjectByID(int ID);
+		GameObject& searchObjectByID(int ID);
+
+		const int& getSceneID() const;
+
+		const std::string& getSceneName() const;
+
+		void setSceneName(std::string newName);
 
 
 	private:
-		
-		std::vector<GameObject*> objectList;
+	
+		int ID;
 
-		bool addObjectToList(GameObject* objectToAdd);
+		std::string name;
+
+		std::vector<std::unique_ptr<GameObject>> objectList;
+
+		bool addObjectToList(GameObject objectToAdd);
 
 		bool removeObjectFromList(GameObject* objectToRemove);
 

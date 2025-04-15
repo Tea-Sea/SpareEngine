@@ -1,9 +1,11 @@
 #include "headers/TestObject.hpp"
 
 
-    TestObject::TestObject()
+    TestObject::TestObject(glm::vec3 position, int ID)
     {
-        RenderableComponent* renderableComponent = new RenderableComponent();
+        setID(ID);
+        setPosition(position);
+        renderable = new RenderableComponent();
     }
 
     TestObject::~TestObject()

@@ -32,6 +32,7 @@ Engine::~Engine()
     m_renderer.~Renderer();
     m_windowManager.~WindowManager();
     m_inputManager.~InputManager();
+    m_sceneManager.~SceneManager();
     SDL_Quit();
 }
 
@@ -59,6 +60,11 @@ InputManager* Engine::getInputManager()
     return &m_inputManager;
 }
 
+SceneManager* Engine::getSceneManager()
+{
+    return &m_sceneManager;
+}
+
 bool Engine::run()
 {
     // Main Loop
@@ -66,7 +72,7 @@ bool Engine::run()
     {
         m_inputManager.update();
 
-        m_renderer.renderLoop(m_windowManager.getWindow());
+        m_renderer.renderLoop(m_windowManager.getWindow(), m_sceneManager.getCurrentScene()->getObjectList());
         
         SDL_Delay(0.5);
     }

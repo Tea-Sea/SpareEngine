@@ -1,8 +1,7 @@
 #include "headers/GameObject.hpp"
 
 GameObject::GameObject() : position(position)
-{
-
+{  
 }
 
 GameObject::GameObject(glm::vec3 position, int ID) : position(position)
@@ -33,4 +32,14 @@ int GameObject::getID()
 void GameObject::setID(int id) 
 {
     ID = id;
+}
+
+bool GameObject::hasRenderable() const
+{
+    return renderable != nullptr;
+}
+
+RenderableComponent* GameObject::getRenderable()
+{
+    return renderable;
 }

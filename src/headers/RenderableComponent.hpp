@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Mesh.hpp"
+#include "Shader.hpp"
 
 class RenderableComponent
 {
@@ -16,5 +17,6 @@ class RenderableComponent
 
     Mesh* mesh;
 	// Material* material;
+	Shader* shader;
 
 };

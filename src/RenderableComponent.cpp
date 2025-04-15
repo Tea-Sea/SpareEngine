@@ -3,8 +3,9 @@
 
 RenderableComponent::RenderableComponent()
 {
-    Mesh* mesh = new Mesh();
+    mesh = new Mesh();
     // Material* material  new Material();
+    shader = new Shader("orange.glsl");
 }
 
 RenderableComponent::~RenderableComponent()
