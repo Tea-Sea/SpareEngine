@@ -2,6 +2,8 @@
 
 #include "../utils/Geometry.hpp"
 #include "GameObject.hpp"
+#include "Camera.hpp"
+#include "../utils/RenderData.hpp"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_main.h>
@@ -19,7 +21,7 @@ class Renderer
 
 		~Renderer();
 
-		bool renderLoop(SDL_Window* window, std::vector<std::unique_ptr<GameObject>>& objects);
+		bool renderLoop(SDL_Window* window, RenderData data);
 
 		// 2D
 		bool drawPixel(Vector2 &pos, int colour);
@@ -39,6 +41,8 @@ class Renderer
 	GLuint VAO, VBO, vertexShader;
 
 	std::vector<float>* vertices;
+
+	bool debugging = true;
 
 	void beginFrame();
 

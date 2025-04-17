@@ -6,9 +6,10 @@ Engine* Engine::instance = nullptr;
 
 Engine::Engine(const std::string& title, int width, int height) 
     :   m_windowManager(title.c_str(), width, height),
+        m_sceneManager(),
         m_renderer(m_windowManager.getWindow()),
-        m_inputManager(),
-        m_sceneManager()
+        m_inputManager()
+        
 {
     // Check if engine instance already exists
     if (instance == nullptr) {
@@ -71,7 +72,7 @@ bool Engine::run()
     }
         
 
-        m_renderer.renderLoop(m_windowManager.getWindow(), m_sceneManager.getCurrentScene()->getObjectList());
+        m_renderer.renderLoop(m_windowManager.getWindow(), m_sceneManager.getCurrentScene()->prepareRenderData());
         
         SDL_Delay(0.5);
     }

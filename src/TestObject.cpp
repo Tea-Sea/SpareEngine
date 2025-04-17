@@ -5,6 +5,9 @@
     {
         setID(ID);
         setPosition(position);
+
+        setName("test");
+
         renderable = new RenderableComponent();
     }
 

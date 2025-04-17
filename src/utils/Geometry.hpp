@@ -1,5 +1,8 @@
 #pragma once
 
+#include <glm/glm.hpp>
+#include <glm/gtx/quaternion.hpp>
+
 struct Vector2
 {
     float x, y;
@@ -19,5 +22,35 @@ struct Vector3
 
 struct Vertex
 {
-    // TODO: add vertex info
+    glm::vec3 position;
+    glm::vec3 normal;
+    glm::vec2 uv;
+};
+
+struct Transform 
+{
+    glm::vec3 position;
+    glm::quat rotation;
+    glm::vec3 scale;
+    
+
+    glm::mat4 getModel() const
+    {
+        glm::mat4 model;
+
+        model = glm::translate(model, position);
+        model *= glm::toMat4(rotation);
+        model = glm::scale(model, scale);
+
+        return model;
+    }
+
+    Transform operator*(const Transform& other) const 
+    {
+        return Transform
+        {
+            position * other.position,
+            rotation * other.rotation,
+            scale * other.scale};
+        }
 };

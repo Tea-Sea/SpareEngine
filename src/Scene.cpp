@@ -7,11 +7,18 @@ Scene::Scene(int id)
     ID = id;
 
     // Test purposes
-    GameObject testObject0(glm::vec3(0, 0, 0), 0);
-    TestObject testObject1(glm::vec3(1, 1, 1), 1);
+    Player* testPlayer = new Player();
+    Camera* testCamera = new Camera();
+    TestObject* testObject = new TestObject(glm::vec3(1, 1, 1), 2);
+    
+    camera = testCamera;
+    
 
-    addObjectToList(testObject0);
-    addObjectToList(testObject1);
+    testPlayer->addChild(testCamera);
+
+    addObjectToList(testObject);
+    addObjectToList(testPlayer);
+    addObjectToList(testCamera);
 }
 
 Scene::Scene(std::string src)
@@ -23,9 +30,9 @@ Scene::~Scene()
 {
 }
 
-bool Scene::addObjectToList(GameObject obj)
+bool Scene::addObjectToList(GameObject* obj)
 {
-    objectList.push_back(std::make_unique<GameObject>(obj));
+    objectList.push_back(std::unique_ptr<GameObject>(obj));
     return 1;
 }
 
@@ -62,4 +69,23 @@ const std::string& Scene::getSceneName() const
 void Scene::setSceneName(std::string newName)
 {
    name = newName;
+}
+GameObject* Scene::getCamera() const
+{
+    return camera;
+}
+
+RenderData Scene::prepareRenderData() {
+    RenderData data;
+    data.camera = camera;
+    for (auto& obj : getObjectList())
+    {
+        if (obj->hasRenderable())
+        {
+            data.objects.push_back(obj.get()); // non-owning raw pointer
+        }
+    }
+    // data.objects = gatherVisibleObjects(); // could do culling here
+    // data.lights = activeLights;
+    return data;
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Mesh.hpp"
-#include "Shader.hpp"
+#include "Material.hpp"
 
 class RenderableComponent
 {
@@ -13,12 +13,11 @@ class RenderableComponent
 
         Mesh* getMesh();
 
-        Shader* getShader();
+        Material* getMaterial();
 		
 	private:
 
     Mesh* mesh;
-	// Material* material;
-	Shader* shader;
+	Material* material;
 
 };

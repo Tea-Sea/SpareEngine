@@ -28,33 +28,42 @@ void Renderer::endFrame(SDL_Window* window)
     SDL_GL_SwapWindow(window);
 }
 
-bool Renderer::renderLoop(SDL_Window* window, std::vector<std::unique_ptr<GameObject>>& objects)
+bool Renderer::renderLoop(SDL_Window* window, RenderData data)
 {
-
+    data.camera->getViewMatrix();
     beginFrame();
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    // DEBUGGING
-    for (const auto& obj : objects)
+
+    for (const auto& obj : data.objects)
     {
         if (obj->hasRenderable())
         {
-            glUniform3f(glGetUniformLocation(obj->getRenderable()->getShader()->getShaderProgram(), "colour"), 5.0f, 0.2f, 0.0f);  // Set wireframe colour
-            obj->getRenderable()->getShader()->use();
-            obj->getRenderable()->getMesh()->draw(obj->getRenderable()->getShader());
+            glUniform3f(glGetUniformLocation(obj->getRenderable()->getMaterial()->getShader()->getShaderProgram(), "colour"), 5.0f, 0.2f, 0.0f);  // Set wireframe colour
+            obj->getRenderable()->getMaterial()->getShader()->bind();
+            obj->getRenderable()->getMesh()->draw(obj->getRenderable()->getMaterial()->getShader());
+
+            // TODO: Refactor this because its gross as
+
+            // object.material->shader->bind();
+            // object.material->applyUniforms();
+            // object.mesh->draw();
         }
     }
-
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // Switch to wireframe mode
-    glLineWidth(2.0f);  // Optional: Change line width for better visibility
-
-    for (const auto& obj : objects)
+    // DEBUGGING
+    if (debugging)
     {
-        if (obj->hasRenderable())
+        
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // Switch to wireframe mode
+
+        for (const auto& obj : data.objects)
         {
-            // Use a different colour for wireframe
-            glUniform3f(glGetUniformLocation(obj->getRenderable()->getShader()->getShaderProgram(), "colour"), 1.0f, 1.0f, 1.0f);  // Set wireframe colour
-            obj->getRenderable()->getShader()->use();
-            obj->getRenderable()->getMesh()->draw(obj->getRenderable()->getShader());
+            if (obj->hasRenderable())
+            {
+                // Use a different colour for wireframe
+                glUniform3f(glGetUniformLocation(obj->getRenderable()->getMaterial()->getShader()->getShaderProgram(), "colour"), 1.0f, 1.0f, 1.0f);  // Set wireframe colour
+                obj->getRenderable()->getMaterial()->getShader()->bind();
+                obj->getRenderable()->getMesh()->draw(obj->getRenderable()->getMaterial()->getShader());
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Shader.hpp"
+#include "../utils/Geometry.hpp"
 
 #include <vector>
 #include <glad/glad.h>
@@ -16,11 +17,12 @@ class Mesh
 
 		Mesh(std::string src);
 
-        Mesh(const std::vector<float>& verts, const std::vector<int>& inds);
+        Mesh(const std::vector<Vertex>& verts, const std::vector<int>& inds);
 
 		~Mesh();
 
-        std::vector<float>* getVertices();
+        std::vector<Vertex>* getVertices();
+
         std::vector<int>* getIndices();
 
         void draw(Shader* shader) const;
@@ -29,7 +31,8 @@ class Mesh
 
         bool uploaded;
 
-        std::vector<float> vertices;
+        std::vector<Vertex> vertices;
+
         std::vector<int> indices;
 
         GLuint vao = 0;
