@@ -28,45 +28,57 @@ void Renderer::endFrame(SDL_Window* window)
     SDL_GL_SwapWindow(window);
 }
 
+void Renderer::drawObjects(RenderData data)
+{
+    Shader* currentShader = nullptr;
+    for (const auto& obj : data.objects)
+    {
+        Shader* shader = obj->getRenderable()->getMaterial()->getShader();
+
+        if (shader != currentShader)
+        {
+            glUniform3f(glGetUniformLocation(obj->getRenderable()->getMaterial()->getShader()->getShaderProgram(), "colour"), 5.0f, 0.2f, 0.0f);
+            if (debugging)
+            {
+            glUniform3f(glGetUniformLocation(obj->getRenderable()->getMaterial()->getShader()->getShaderProgram(), "colour"), 1.0f, 1.0f, 1.0f);
+            }
+            obj->getRenderable()->getMaterial()->getShader()->bind();
+            currentShader = shader;
+
+            shader->setMatrix("view", data.camera->getViewMatrix());
+            shader->setMatrix("projection", data.camera->getProjectionMatrix());
+        }
+        shader->setMatrix("model", obj->getModelMatrix());
+
+        // TODO: Move these to the scene
+        // obj->getRenderable()->getMaterial()->getShader()->setMatrix("view", data.camera->getViewMatrix());
+        // obj->getRenderable()->getMaterial()->getShader()->setMatrix("projection", data.camera->getProjectionMatrix());
+
+        obj->getRenderable()->getMesh()->draw(obj->getRenderable()->getMaterial()->getShader());
+
+        // TODO: Refactor this because its gross as
+        
+    }
+}
+
 bool Renderer::renderLoop(SDL_Window* window, RenderData data)
 {
-    data.camera->getViewMatrix();
+    // data.camera->getViewMatrix();
     beginFrame();
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
-    for (const auto& obj : data.objects)
-    {
-        if (obj->hasRenderable())
-        {
-            glUniform3f(glGetUniformLocation(obj->getRenderable()->getMaterial()->getShader()->getShaderProgram(), "colour"), 5.0f, 0.2f, 0.0f);  // Set wireframe colour
-            obj->getRenderable()->getMaterial()->getShader()->bind();
-            obj->getRenderable()->getMesh()->draw(obj->getRenderable()->getMaterial()->getShader());
+    drawObjects(data);
 
-            // TODO: Refactor this because its gross as
-
-            // object.material->shader->bind();
-            // object.material->applyUniforms();
-            // object.mesh->draw();
-        }
-    }
     // DEBUGGING
     if (debugging)
     {
-        
+        // Draw objects in wireframe mode
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // Switch to wireframe mode
 
-        for (const auto& obj : data.objects)
-        {
-            if (obj->hasRenderable())
-            {
-                // Use a different colour for wireframe
-                glUniform3f(glGetUniformLocation(obj->getRenderable()->getMaterial()->getShader()->getShaderProgram(), "colour"), 1.0f, 1.0f, 1.0f);  // Set wireframe colour
-                obj->getRenderable()->getMaterial()->getShader()->bind();
-                obj->getRenderable()->getMesh()->draw(obj->getRenderable()->getMaterial()->getShader());
-            }
-        }
+        drawObjects(data);
     }
 
+    // Move these to uniform construction code in shader
     // GLint resLoc = glGetUniformLocation(shaderProgram, "iResolution");
     // glUniform2f(resLoc, 600, 800);
 

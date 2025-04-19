@@ -7,9 +7,9 @@ Scene::Scene(int id)
     ID = id;
 
     // Test purposes
-    Player* testPlayer = new Player();
+    Player* testPlayer = new Player(glm::vec3(-1, 1, -1), 0);
     Camera* testCamera = new Camera();
-    TestObject* testObject = new TestObject(glm::vec3(1, 1, 1), 2);
+    TestObject* testObject = new TestObject(glm::vec3(0, 0, 0), 2);
     
     camera = testCamera;
     
@@ -89,3 +89,11 @@ RenderData Scene::prepareRenderData() {
     // data.lights = activeLights;
     return data;
 }
+
+void Scene::update(float deltaTime)
+{
+    for (int i = 0; i < objectList.size(); ++i) {
+        objectList[i]->update(deltaTime);
+    }
+}
+    

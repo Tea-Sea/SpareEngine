@@ -36,7 +36,6 @@ public:
 
     const std::string& getName() const;
 
-
     void setPosition(const glm::vec3& newPosition);
 
     void setRotation(const glm::quat& rot);
@@ -55,9 +54,13 @@ public:
 
     std::vector<GameObject*> children;
 
+    glm::mat4 getModelMatrix();
+
+    virtual void update(float deltaTime);
 
 protected:
-    glm::vec3 position;  // Common position for all objects
+
+    glm::vec3 velocity;
 
     Transform transform;
     

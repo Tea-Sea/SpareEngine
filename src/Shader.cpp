@@ -27,27 +27,27 @@ Shader::Shader(std::string path)
     glUseProgram(shaderProgram);
     // FOR TESTING PURPOSES -----------------
    
-    GLint modelLoc = glGetUniformLocation(shaderProgram, "model");
-    GLint viewLoc  = glGetUniformLocation(shaderProgram, "view");
-    GLint projLoc  = glGetUniformLocation(shaderProgram, "projection");
+    // GLint modelLoc = glGetUniformLocation(shaderProgram, "model");
+    // GLint viewLoc  = glGetUniformLocation(shaderProgram, "view");
+    // GLint projLoc  = glGetUniformLocation(shaderProgram, "projection");
 
-    glm::mat4 model = glm::mat4(1.0f);
-    glm::mat4 view = glm::lookAt(
-        glm::vec3(3.0f, 3.0f, 3.0f), // camera position
-        glm::vec3(0.0f, 0.0f, 0.0f), // look at
-        glm::vec3(0.0f, 1.0f, 0.0f)  // up vector
-    );
-    glm::mat4 projection = glm::perspective(
-        glm::radians(45.0f),
-        (float)600 / (float)800,
-        0.1f,
-        100.0f
-    );
+    // glm::mat4 model = glm::mat4(1.0f);
+    // glm::mat4 view = glm::lookAt(
+    //     glm::vec3(3.0f, 3.0f, 3.0f), // camera position
+    //     glm::vec3(0.0f, 0.0f, 0.0f), // look at
+    //     glm::vec3(0.0f, 1.0f, 0.0f)  // up vector
+    // );
+    // glm::mat4 projection = glm::perspective(
+    //     glm::radians(45.0f),
+    //     (float)600 / (float)800,
+    //     0.1f,
+    //     100.0f
+    // );
 
     // Upload matrices to shader
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+    // glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+    // glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+    // glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
     // -----------------------
     
     vert.close();
@@ -135,10 +135,10 @@ GLuint Shader::getShaderProgram()
     return shaderProgram;
 }
 
-void Shader::setMat4(GLchar* property, glm::mat4 matrix)
+void Shader::setMatrix(GLchar* property, glm::mat4 matrix)
 {
-    GLint modelLoc = glGetUniformLocation(shaderProgram, property);
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(matrix));
+    GLint uniform = glGetUniformLocation(shaderProgram, property);
+    glUniformMatrix4fv(uniform, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
 // void Shader::setUniform(const std::string& name, const glm::mat4& matrix) 

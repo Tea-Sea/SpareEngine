@@ -21,9 +21,9 @@ public:
 
     GLuint getShaderProgram();
 
-    void setMat4(GLchar* property, glm::mat4 matrix);
+    void setMatrix(GLchar* property, glm::mat4 matrix);
 
-    void setUniform(const std::string& name, const glm::mat4& matrix);
+    // void setUniform(const std::string& name, const glm::mat4& matrix);
 
     void bind();
     

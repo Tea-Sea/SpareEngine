@@ -1,7 +1,7 @@
 #include "headers/SceneManager.hpp"
 
 
-SceneManager::SceneManager()
+SceneManager::SceneManager(SDL_Window* window)
 {
     currentScene = new Scene(0);
     //currentScene->getObjectList();
@@ -20,4 +20,12 @@ bool SceneManager::loadScene(Scene* sceneToLoad)
 Scene* SceneManager::getCurrentScene()
 {
     return currentScene;
+}
+
+void SceneManager::updateCurrentScene(float deltaTime)
+{
+    if (currentScene)
+    {
+        currentScene->update(deltaTime);
+    }
 }

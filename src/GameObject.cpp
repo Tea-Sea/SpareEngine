@@ -1,6 +1,6 @@
 #include "headers/GameObject.hpp"
 
-GameObject::GameObject() : position(position)
+GameObject::GameObject()
 {  
 }
 
@@ -9,10 +9,11 @@ GameObject::GameObject(int ID)
     setID(ID);
 }
 
-GameObject::GameObject(glm::vec3 position, int ID) : position(position)
+GameObject::GameObject(glm::vec3 position, int ID)
 {
     setID(ID);
     setPosition(position);
+    velocity = {0,0,0};
 }
 
 GameObject::~GameObject()
@@ -119,4 +120,15 @@ bool GameObject::hasRenderable() const
 RenderableComponent* GameObject::getRenderable()
 {
     return renderable;
+}
+
+glm::mat4 GameObject::getModelMatrix()
+{
+    return transform.getModelMatrix();
+}
+
+
+void GameObject::update(float deltaTime)
+{
+    // transform.position += velocity * deltaTime;
 }

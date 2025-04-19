@@ -25,8 +25,6 @@ class Engine
         
         static Engine& getInstance();   
         
-        float getDeltaTime() const;
-        
         int getWidth() const;
         
         int getHeight() const;
@@ -37,7 +35,7 @@ class Engine
 
         ~Engine();
 
-        void calculateDeltaTime();
+        float calculateDeltaTime();
 
         static Engine* instance;
 
@@ -49,7 +47,7 @@ class Engine
 
         SceneManager m_sceneManager;
 
-        int frameStart;
+        float startTick;
 
         float dt;
 

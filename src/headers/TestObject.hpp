@@ -12,4 +12,5 @@ public:
 
     ~TestObject();
 
+    void update(float deltaTime);
 };

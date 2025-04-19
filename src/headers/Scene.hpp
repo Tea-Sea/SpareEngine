@@ -35,6 +35,8 @@ class Scene
 
 		RenderData prepareRenderData();
 
+		virtual void update(float deltaTime);
+
 
 	private:
 	

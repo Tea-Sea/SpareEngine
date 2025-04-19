@@ -48,4 +48,6 @@ class Renderer
 
 	void endFrame(SDL_Window* window);
 
+	void drawObjects(RenderData data);
+
 };

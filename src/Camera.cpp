@@ -3,7 +3,12 @@
 Camera::Camera()
 {
     setName("Camera");
+
+    
     // TODO: Handle view an projection matrixes
+
+    view = getViewMatrix();
+    projection = getProjectionMatrix();
 }
 
 Camera::~Camera()
@@ -13,8 +18,10 @@ Camera::~Camera()
 
 glm::mat4 Camera::getViewMatrix() const
 {
-    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(-pitch), glm::vec3(1, 0, 0));
-    return rotationMatrix * glm::inverse(this->getTransform().getModel());
+    // glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(-pitch), glm::vec3(1, 0, 0));
+    // return rotationMatrix * glm::inverse(this->getTransform().getModelMatrix());
+
+    return glm::lookAt(glm::vec3(0,0,3), glm::vec3(0,0,0), glm::vec3(0,1,0));
 }
 
 glm::mat4 Camera::getProjectionMatrix() const

@@ -7,6 +7,8 @@ class Player : public GameObject
 	public:
 	
         Player();
+		
+		Player(glm::vec3 pos, int id);
 
 		~Player();
 		

@@ -11,19 +11,6 @@ WindowManager::WindowManager(const std::string& title, int width, int height)
     {
         throw std::logic_error("Failed to initialise SDL library.");
     }
-
-    // Tell SDL NOT to use OpenGL ES
-    SDL_SetHint(SDL_HINT_OPENGL_ES_DRIVER, "0");
-
-    // Set OpenGL version
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
-
-    // Set profile to core
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-
-    // Optional: forward compatibility
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
     
     // Create SDL window
     window = SDL_CreateWindow( title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL); 

@@ -10,13 +10,16 @@ class SceneManager
 {
 	public:
 	
-		SceneManager();
+		SceneManager(SDL_Window* window);
 
 		~SceneManager();
 
 		Scene* getCurrentScene();
 
 		bool loadScene(Scene* sceneToLoad);
+
+		void updateCurrentScene(float deltaTime);
+
 
 	private:
 
