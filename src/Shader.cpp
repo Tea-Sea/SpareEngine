@@ -4,89 +4,63 @@
 #include <sstream>
 
 
-Shader::Shader(std::string path)
+Shader::Shader(std::string fragPath)
 {
-    std::stringstream strBuffer;
-    std::string vertSrc = "assets/shaders/vertex.glsl";
-    path = "assets/shaders/" + path;
-    
-    //Load and compile shaders
-    std::ifstream vert(vertSrc);
-    std::ifstream frag(path);
+    fragPath = "assets/shaders/" + fragPath;
+    std::string vertexPath = "assets/shaders/vertex.glsl";
 
-    if (!frag) {
-        std::cerr << "Error reading shader file." << std::endl;
-    }
-    strBuffer << vert.rdbuf();
-    vertexShader = compileShader(GL_VERTEX_SHADER, strBuffer.str());
-    strBuffer.str(std::string());
-    strBuffer << frag.rdbuf();
-    fragShader = compileShader(GL_FRAGMENT_SHADER, strBuffer.str());
+    vertexShader = compileShader(GL_VERTEX_SHADER, loadShaderFromSrc(vertexPath));
+    fragShader = compileShader(GL_FRAGMENT_SHADER, loadShaderFromSrc(fragPath));
 
     shaderProgram = createShaderProgram(vertexShader, fragShader);
-    glUseProgram(shaderProgram);
-    // FOR TESTING PURPOSES -----------------
-   
-    // GLint modelLoc = glGetUniformLocation(shaderProgram, "model");
-    // GLint viewLoc  = glGetUniformLocation(shaderProgram, "view");
-    // GLint projLoc  = glGetUniformLocation(shaderProgram, "projection");
 
-    // glm::mat4 model = glm::mat4(1.0f);
-    // glm::mat4 view = glm::lookAt(
-    //     glm::vec3(3.0f, 3.0f, 3.0f), // camera position
-    //     glm::vec3(0.0f, 0.0f, 0.0f), // look at
-    //     glm::vec3(0.0f, 1.0f, 0.0f)  // up vector
-    // );
-    // glm::mat4 projection = glm::perspective(
-    //     glm::radians(45.0f),
-    //     (float)600 / (float)800,
-    //     0.1f,
-    //     100.0f
-    // );
+    // Clean up shaders after linking
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragShader);
 
-    // Upload matrices to shader
-    // glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-    // glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-    // glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-    // -----------------------
-    
-    vert.close();
-    frag.close();
+    cacheUniformLocations(shaderProgram);
 }
 
-Shader::Shader(std::string vertPath, std::string fragPath)
+Shader::Shader(std::string vertexPath, std::string fragPath)
 {
-    std::stringstream strBuffer;
 
-    vertPath = "assets/shaders/" + vertPath;
     fragPath = "assets/shaders/" + fragPath;
-    //Load and compile shaders
-    std::ifstream vert(vertPath);
-    std::ifstream frag(fragPath);
+    vertexPath = "assets/shaders/" + vertexPath;
 
-    if (!vert) {
-        std::cerr << "Error reading vertex shader file." << std::endl;
-    }
-    if (!frag) {
-        std::cerr << "Error reading fragment shader file." << std::endl;
-    }
+    vertexShader = compileShader(GL_VERTEX_SHADER, loadShaderFromSrc(vertexPath));
+    fragShader = compileShader(GL_FRAGMENT_SHADER, loadShaderFromSrc(fragPath));
 
-    strBuffer << vert.rdbuf();
-    vertexShader = compileShader(GL_VERTEX_SHADER, strBuffer.str());
-    strBuffer.str(std::string());
-    strBuffer << frag.rdbuf();
-    fragShader = compileShader(GL_FRAGMENT_SHADER, strBuffer.str());
+    shaderProgram = createShaderProgram(vertexShader, fragShader);
 
-    createShaderProgram(vertexShader, fragShader);
+    // Clean up shaders after linking
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragShader);
 
-    vert.close();
-    frag.close();
+    cacheUniformLocations(shaderProgram);
 }
 
 Shader::~Shader()
 {
 
 }
+
+std::string Shader::loadShaderFromSrc(std::string src)
+{
+
+    std::ifstream shaderSrc(src);
+
+    if (!shaderSrc) {
+        std::cerr << "Error reading shader file: " << src << std::endl;
+    }
+
+    std::stringstream strBuffer;
+
+    strBuffer << shaderSrc.rdbuf();
+    shaderSrc.close();
+
+    return strBuffer.str();
+}
+
 
 GLuint Shader::compileShader(GLenum shaderType, std::string src)
 {
@@ -109,25 +83,21 @@ GLuint Shader::compileShader(GLenum shaderType, std::string src)
 
 GLuint Shader::createShaderProgram(GLuint vert, GLuint frag)
 {
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vert);
-    glAttachShader(shaderProgram, frag);
-    glLinkProgram(shaderProgram);
+    GLuint program = glCreateProgram();
+    glAttachShader(program, vert);
+    glAttachShader(program, frag);
+    glLinkProgram(program);
 
     // Check for linking errors
     GLint success;
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
     if (!success) {
         char infoLog[512];
-        glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
+        glGetProgramInfoLog(program, 512, nullptr, infoLog);
         std::cerr << "Shader Linking Failed:\n" << infoLog << std::endl;
     }
 
-    // Clean up shaders after linking
-    glDeleteShader(vert);
-    glDeleteShader(frag);
-
-    return shaderProgram;
+    return program;
 }
 
 GLuint Shader::getShaderProgram()
@@ -135,17 +105,72 @@ GLuint Shader::getShaderProgram()
     return shaderProgram;
 }
 
-void Shader::setMatrix(GLchar* property, glm::mat4 matrix)
+// Mat4
+void Shader::setUniform(GLchar* name, glm::mat4 matrix)
 {
-    GLint uniform = glGetUniformLocation(shaderProgram, property);
-    glUniformMatrix4fv(uniform, 1, GL_FALSE, glm::value_ptr(matrix));
+    glUniformMatrix4fv(uniformLocations[hasGenericUniform(name)], 1, GL_FALSE, glm::value_ptr(matrix));
+
 }
 
-// void Shader::setUniform(const std::string& name, const glm::mat4& matrix) 
-// {
-//     GLint location = getUniformLocation(name);
-//     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
-// }
+// Vec2
+void Shader::setUniform(GLchar* name, glm::vec2 vector)
+{
+    glUniform2f(uniformLocations[hasGenericUniform(name)], vector.x, vector.y);
+
+}
+
+// Bool
+void Shader::setUniform(GLchar* name, bool value)
+{
+    glUniform1i(uniformLocations[hasGenericUniform(name)], (int)value);
+
+}
+
+// Int
+void Shader::setUniform(GLchar* name, int value)
+{
+    glUniform1i(uniformLocations[hasGenericUniform(name)], value);
+
+}
+
+// Float
+void Shader::setUniform(GLchar* name, float value)
+{
+    glUniform1f(uniformLocations[hasGenericUniform(name)], value);
+}
+
+void Shader::cacheUniformLocations(const GLuint& shader)
+{
+    int numUniforms = 0;
+    glGetProgramiv(shader, GL_ACTIVE_UNIFORMS, &numUniforms);
+
+    for (int i = 0; i < numUniforms; ++i) {
+        char name[256];
+        GLsizei length;
+        GLint size;
+        GLenum type;
+
+        glGetActiveUniform(shader, i, sizeof(name), &length, &size, &type, name);
+        std::cout << "Uniform " << i << ": " << name << ": " << length << ": " << size << ": " << type << std::endl;
+        GLuint location = glGetUniformLocation(shader, name);
+        uniformLocations[name] = location;
+    }
+}
+
+const GLchar* Shader::hasGenericUniform(GLchar* name) const
+{
+    for (auto& [uniformName, loc] : uniformLocations)
+    {
+        std::string lower = toLowerCase(uniformName);
+        if (lower.find(name) != std::string::npos)
+        {
+          return uniformName.c_str();
+        }
+    }
+    std::cerr << "Error: Could not find shader uniform: " << name << std::endl;
+    return 0;
+}
+
 
 void Shader::bind()
 {

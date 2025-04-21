@@ -21,7 +21,7 @@ class Renderer
 
 		~Renderer();
 
-		bool renderLoop(SDL_Window* window, RenderData data);
+		bool renderLoop(SDL_Window* window, float deltaTime, RenderData data);
 
 		// 2D
 		bool drawPixel(Vector2 &pos, int colour);
@@ -48,6 +48,6 @@ class Renderer
 
 	void endFrame(SDL_Window* window);
 
-	void drawObjects(RenderData data);
+	void drawObjects(RenderData data, float deltaTime, bool debugging);
 
 };

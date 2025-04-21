@@ -49,7 +49,7 @@ class Engine
 
         float startTick;
 
-        float dt;
+        float deltaTime;
 
         int width;
 

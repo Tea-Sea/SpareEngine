@@ -17,8 +17,7 @@ Engine::Engine(const std::string& title, int width, int height)
     } else {
         throw std::logic_error("Engine constructor called when an instance is already created.");
     }
-
-    // TODO: Check MIX_Init       
+    // TODO: Check MIX_Init   
 }
 
 Engine::~Engine()
@@ -62,12 +61,11 @@ SceneManager* Engine::getSceneManager()
 float Engine::calculateDeltaTime()
 {
     float currentTick = SDL_GetTicks();
-    dt = (currentTick - startTick) / 1000.0f; // Convert to seconds
+    deltaTime = (currentTick - startTick) / 1000.0f; // Convert to seconds
 
     // Update startTicks for next frame
     startTick = currentTick;
-    std::cout << dt << "\n";
-    return dt;
+    return deltaTime;
 }
 
 bool Engine::run()
@@ -76,6 +74,7 @@ bool Engine::run()
     // Main Loop
     while (!m_inputManager.getQuitRequested())
     {
+        calculateDeltaTime();
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
@@ -83,11 +82,11 @@ bool Engine::run()
             m_windowManager.update(event);
         }
         
-        m_sceneManager.updateCurrentScene(calculateDeltaTime());
+        m_sceneManager.updateCurrentScene(deltaTime);
 
-        m_renderer.renderLoop(m_windowManager.getWindow(), m_sceneManager.getCurrentScene()->prepareRenderData());
+        m_renderer.renderLoop(m_windowManager.getWindow(), SDL_GetTicks() / 1000.0f, m_sceneManager.getCurrentScene()->prepareRenderData());
         
-        SDL_Delay(0.5);
+        // SDL_Delay(0.5);
     }
     return 0;
 }

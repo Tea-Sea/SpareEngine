@@ -1,7 +1,9 @@
 #include "headers/GameObject.hpp"
 
 GameObject::GameObject()
-{  
+{ 
+    setScale({1.0f, 1.0f, 1.0f});
+    setPosition({0.0f, 0.0f, 0.0f});
 }
 
 GameObject::GameObject(int ID)
@@ -95,11 +97,9 @@ void GameObject::setRotation(const glm::quat& rot)
     transform.rotation = rot;
 }
 
-void GameObject::setScale(const float x, const float y, const float z) 
+void GameObject::setScale(const glm::vec3& newScale) 
 {
-    transform.scale.x = x;
-    transform.scale.y = y;
-    transform.scale.z = z;
+    transform.scale = newScale;
 }
 
 void GameObject::setID(int id) 
@@ -130,5 +130,5 @@ glm::mat4 GameObject::getModelMatrix()
 
 void GameObject::update(float deltaTime)
 {
-    // transform.position += velocity * deltaTime;
+    transform.position += velocity * deltaTime;
 }

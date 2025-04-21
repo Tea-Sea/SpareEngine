@@ -1,19 +1,25 @@
 #pragma once
 
 #include <string>
+#include <vector>
+#include <unordered_map>
 #include <glad/glad.h>
-#include <glm/glm.hpp> 
+#include <glm/glm.hpp>
 #include "glm/gtc/matrix_transform.hpp"
 #include <glm/gtc/type_ptr.hpp>
+
+#include "../utils/String.hpp"
 
 class Shader {
 
 public:
-    Shader(std::string path);
+    Shader(std::string vertexPath);
 
-    Shader(std::string vertPath, std::string fragPath);
+    Shader(std::string vertexPath, std::string fragPath);
 
     ~Shader();
+
+    std::string loadShaderFromSrc(std::string src);
 
     GLuint compileShader(GLenum shaderType, std::string source);
 
@@ -21,12 +27,22 @@ public:
 
     GLuint getShaderProgram();
 
-    void setMatrix(GLchar* property, glm::mat4 matrix);
+    void setUniform(GLchar* name, glm::mat4 matrix);
 
-    // void setUniform(const std::string& name, const glm::mat4& matrix);
+    void setUniform(GLchar* name, glm::vec2 vector);
+
+    void setUniform(GLchar* name, bool value);
+
+    void setUniform(GLchar* name, int value);
+
+    void setUniform(GLchar* name, float value);
+
+    void cacheUniformLocations(const GLuint& shader);
+
+    const GLchar* hasGenericUniform(GLchar* name) const;
 
     void bind();
-    
+
     void unbind();
 
 
@@ -36,5 +52,7 @@ private:
     GLuint fragShader;
 
     GLuint shaderProgram;
+
+    std::unordered_map<std::string, GLint> uniformLocations;
 
 };

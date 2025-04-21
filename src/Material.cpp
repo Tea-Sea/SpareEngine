@@ -2,7 +2,7 @@
 
 Material::Material()
 {
-    shader = new Shader("orange.glsl");
+    shader = new Shader("vertex.glsl", "test.glsl");
     // std::unordered_map<std::string, UniformValue> uniforms;
 }
 

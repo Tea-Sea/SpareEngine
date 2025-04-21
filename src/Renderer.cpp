@@ -28,7 +28,7 @@ void Renderer::endFrame(SDL_Window* window)
     SDL_GL_SwapWindow(window);
 }
 
-void Renderer::drawObjects(RenderData data)
+void Renderer::drawObjects(RenderData data, float deltaTime, bool debugging)
 {
     Shader* currentShader = nullptr;
     for (const auto& obj : data.objects)
@@ -37,18 +37,22 @@ void Renderer::drawObjects(RenderData data)
 
         if (shader != currentShader)
         {
-            glUniform3f(glGetUniformLocation(obj->getRenderable()->getMaterial()->getShader()->getShaderProgram(), "colour"), 5.0f, 0.2f, 0.0f);
             if (debugging)
             {
-            glUniform3f(glGetUniformLocation(obj->getRenderable()->getMaterial()->getShader()->getShaderProgram(), "colour"), 1.0f, 1.0f, 1.0f);
+                glUniform3f(glGetUniformLocation(obj->getRenderable()->getMaterial()->getShader()->getShaderProgram(), "colour"), 1.0f, 1.0f, 1.0f);
+            } else {
+                glUniform3f(glGetUniformLocation(obj->getRenderable()->getMaterial()->getShader()->getShaderProgram(), "colour"), 5.0f, 0.2f, 0.0f);
             }
             obj->getRenderable()->getMaterial()->getShader()->bind();
             currentShader = shader;
 
-            shader->setMatrix("view", data.camera->getViewMatrix());
-            shader->setMatrix("projection", data.camera->getProjectionMatrix());
+            shader->setUniform("view", data.camera->getViewMatrix());
+            shader->setUniform("projection", data.camera->getProjectionMatrix());
+            shader-> setUniform("time", deltaTime);
+            // std::cout << deltaTime << std::endl;
+            shader-> setUniform("resolution", glm::vec2(800.0f, 600.0f));
         }
-        shader->setMatrix("model", obj->getModelMatrix());
+        shader->setUniform("model", obj->getModelMatrix());
 
         // TODO: Move these to the scene
         // obj->getRenderable()->getMaterial()->getShader()->setMatrix("view", data.camera->getViewMatrix());
@@ -56,18 +60,28 @@ void Renderer::drawObjects(RenderData data)
 
         obj->getRenderable()->getMesh()->draw(obj->getRenderable()->getMaterial()->getShader());
 
+
+        GLint location = glGetUniformLocation(shader->getShaderProgram(), "iTime");
+    if (location == -1) {
+        std::cout << "Uniform not found in the shader." << std::endl;
+    } else {
+        GLfloat value;
+        glGetUniformfv(shader-> getShaderProgram(), location, &value);
+        std::cout << "Uniform WAS found at location: " << location << std::endl;
+        std::cout << "Current value: " << value << std::endl;
+    }
         // TODO: Refactor this because its gross as
         
     }
 }
 
-bool Renderer::renderLoop(SDL_Window* window, RenderData data)
+bool Renderer::renderLoop(SDL_Window* window, float deltaTime, RenderData data)
 {
     // data.camera->getViewMatrix();
     beginFrame();
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
-    drawObjects(data);
+    drawObjects(data, deltaTime, 0);
 
     // DEBUGGING
     if (debugging)
@@ -75,7 +89,7 @@ bool Renderer::renderLoop(SDL_Window* window, RenderData data)
         // Draw objects in wireframe mode
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // Switch to wireframe mode
 
-        drawObjects(data);
+        drawObjects(data, deltaTime, 1);
     }
 
     // Move these to uniform construction code in shader

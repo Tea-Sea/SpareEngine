@@ -40,7 +40,7 @@ public:
 
     void setRotation(const glm::quat& rot);
 
-    void setScale(const float x, const float y, const float z);
+    void setScale(const glm::vec3& newScale);
 
     void setID(int id);
 
