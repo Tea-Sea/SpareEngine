@@ -27,7 +27,7 @@ class Scene
 
 		const int& getSceneID() const;
 
-		GameObject* getCamera() const;
+		Camera* getCamera() const;
 
 		const std::string& getSceneName() const;
 

@@ -4,6 +4,7 @@
 SceneManager::SceneManager(SDL_Window* window)
 {
     currentScene = new Scene(0);
+    
     //currentScene->getObjectList();
 }
 

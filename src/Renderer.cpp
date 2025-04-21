@@ -30,6 +30,7 @@ void Renderer::endFrame(SDL_Window* window)
 
 void Renderer::drawObjects(RenderData data, float deltaTime, bool debugging)
 {
+    // data.camera->updateAspectRatio()
     Shader* currentShader = nullptr;
     for (const auto& obj : data.objects)
     {
@@ -61,15 +62,15 @@ void Renderer::drawObjects(RenderData data, float deltaTime, bool debugging)
         obj->getRenderable()->getMesh()->draw(obj->getRenderable()->getMaterial()->getShader());
 
 
-        GLint location = glGetUniformLocation(shader->getShaderProgram(), "iTime");
-    if (location == -1) {
-        std::cout << "Uniform not found in the shader." << std::endl;
-    } else {
-        GLfloat value;
-        glGetUniformfv(shader-> getShaderProgram(), location, &value);
-        std::cout << "Uniform WAS found at location: " << location << std::endl;
-        std::cout << "Current value: " << value << std::endl;
-    }
+    //     GLint location = glGetUniformLocation(shader->getShaderProgram(), "iTime");
+    // if (location == -1) {
+    //     std::cout << "Uniform not found in the shader." << std::endl;
+    // } else {
+    //     GLfloat value;
+    //     glGetUniformfv(shader-> getShaderProgram(), location, &value);
+    //     std::cout << "Uniform WAS found at location: " << location << std::endl;
+    //     std::cout << "Current value: " << value << std::endl;
+    // }
         // TODO: Refactor this because its gross as
         
     }

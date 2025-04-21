@@ -33,3 +33,8 @@ glm::mat4 Camera::getViewProjectionMatrix() const
 {
     return getProjectionMatrix() * getViewMatrix();
 }
+
+void Camera::setAspectRatio(float x, float y)
+{
+    aspect = x / y;
+}

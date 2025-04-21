@@ -4,12 +4,12 @@
 
 Engine* Engine::instance = nullptr;
 
-Engine::Engine(const std::string& title, int width, int height) 
+Engine::Engine(const std::string& title, int width, int height)
     :   m_windowManager(title.c_str(), width, height),
         m_renderer(m_windowManager.getWindow()),
         m_sceneManager(m_windowManager.getWindow()),
         m_inputManager()
-        
+
 {
     // Check if engine instance already exists
     if (instance == nullptr) {
@@ -17,7 +17,11 @@ Engine::Engine(const std::string& title, int width, int height)
     } else {
         throw std::logic_error("Engine constructor called when an instance is already created.");
     }
-    // TODO: Check MIX_Init   
+
+    m_windowManager.setResizeCallback([&](float width, float height) {
+        m_sceneManager.getCurrentScene()->getCamera()->setAspectRatio(width, height);
+    });
+    // TODO: Check MIX_Init
 }
 
 Engine::~Engine()
@@ -29,9 +33,9 @@ Engine::~Engine()
     SDL_Quit();
 }
 
-Engine& Engine::getInstance() 
+Engine& Engine::getInstance()
 {
-    if (instance == nullptr) 
+    if (instance == nullptr)
     {
         instance = new Engine("Spare", 800, 600);
     }
@@ -81,11 +85,11 @@ bool Engine::run()
             m_inputManager.update(event);
             m_windowManager.update(event);
         }
-        
+
         m_sceneManager.updateCurrentScene(deltaTime);
 
         m_renderer.renderLoop(m_windowManager.getWindow(), SDL_GetTicks() / 1000.0f, m_sceneManager.getCurrentScene()->prepareRenderData());
-        
+
         // SDL_Delay(0.5);
     }
     return 0;

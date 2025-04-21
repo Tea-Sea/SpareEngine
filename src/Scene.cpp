@@ -70,7 +70,7 @@ void Scene::setSceneName(std::string newName)
 {
    name = newName;
 }
-GameObject* Scene::getCamera() const
+Camera* Scene::getCamera() const
 {
     return camera;
 }

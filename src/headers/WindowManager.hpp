@@ -4,19 +4,25 @@
 #include <SDL2/SDL_main.h>
 #include <glad/glad.h>
 #include <string>
+#include <functional>
 
 class WindowManager
 {
     public:
     
         WindowManager();
+
         WindowManager(const std::string& title, int width, int height);
 
         ~WindowManager();
 
         SDL_Window* getWindow();
+
+        using ResizeCallback = std::function<void(int width, int height)>;
+
+        void setResizeCallback(ResizeCallback callback);
         
-        static int frame_resize_event(void *userdata, SDL_Event *event);
+        static int frameResizeEvent(void *userdata, SDL_Event *event);
 
         void update(SDL_Event event);
 
@@ -33,6 +39,8 @@ class WindowManager
         SDL_Window* window;
 
         SDL_GLContext glContext;
+
+        ResizeCallback resizeCallback;
 
         int frameStart;
 
