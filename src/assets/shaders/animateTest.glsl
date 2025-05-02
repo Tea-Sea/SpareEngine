@@ -1,7 +1,7 @@
 #version 460 core
 precision mediump float;
 
-out vec4 fragColor;
+out vec4 fragColour;
 
 uniform vec2 iResolution;
 uniform float iTime;
@@ -34,5 +34,5 @@ void main() {
         finalColor += col * d;
     }
 
-    fragColor = vec4(finalColor, 1.0);
+    fragColour = vec4(finalColor, 1.0);
 }

@@ -8,6 +8,7 @@
 #include "Renderer.hpp"
 #include "InputManager.hpp"
 #include "SceneManager.hpp"
+#include "ResourceManager.hpp"
 
 class Engine
 {
@@ -23,6 +24,8 @@ class Engine
         
         SceneManager* getSceneManager();
         
+        ResourceManager* getResourceManager();
+
         static Engine& getInstance();   
         
         int getWidth() const;
@@ -46,6 +49,8 @@ class Engine
         InputManager m_inputManager;
 
         SceneManager m_sceneManager;
+
+        ResourceManager m_resourceManager;
 
         float startTick;
 

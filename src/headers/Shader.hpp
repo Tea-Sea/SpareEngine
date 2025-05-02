@@ -39,7 +39,9 @@ public:
 
     void cacheUniformLocations(const GLuint& shader);
 
-    const GLchar* hasGenericUniform(GLchar* name) const;
+    std::vector<std::string> getUniforms();
+
+    const GLchar* genericToUniformName(const GLchar* name);
 
     void bind();
 
@@ -52,6 +54,8 @@ private:
     GLuint fragShader;
 
     GLuint shaderProgram;
+
+    std::vector<std::string> uniforms;
 
     std::unordered_map<std::string, GLint> uniformLocations;
 

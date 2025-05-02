@@ -46,7 +46,16 @@ void Renderer::drawObjects(RenderData data, float deltaTime, bool debugging)
             }
             obj->getRenderable()->getMaterial()->getShader()->bind();
             currentShader = shader;
+            // if (shader->uniformExists("test"))
+            // {
+            //     shader->setUniform("test", test data)
+            // }
+            // //repeat
+            //     if (test == "view")
+            //     {
 
+            //     }
+            // }
             shader->setUniform("view", data.camera->getViewMatrix());
             shader->setUniform("projection", data.camera->getProjectionMatrix());
             shader-> setUniform("time", deltaTime);
@@ -89,6 +98,7 @@ bool Renderer::renderLoop(SDL_Window* window, float deltaTime, RenderData data)
     {
         // Draw objects in wireframe mode
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // Switch to wireframe mode
+        glDepthMask(GL_FALSE);
 
         drawObjects(data, deltaTime, 1);
     }
@@ -102,6 +112,8 @@ bool Renderer::renderLoop(SDL_Window* window, float deltaTime, RenderData data)
 
     glBindVertexArray(0);
 
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glDepthMask(GL_TRUE);
     endFrame(window);
     return 1;
 }

@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Shader.hpp"
-
-#include <unordered_map>
+#include "Texture.hpp"
 
 class Material
 {
@@ -13,11 +12,12 @@ class Material
 		~Material();
 
         Shader* getShader();
+
+        Texture* getTexture();
 		
 	private:
 
     Shader* shader;
 
-    // std::unordered_map<std::string, UniformValue> uniforms;
-
+    Texture* texture;
 };

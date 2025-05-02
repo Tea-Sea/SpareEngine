@@ -8,7 +8,8 @@ Engine::Engine(const std::string& title, int width, int height)
     :   m_windowManager(title.c_str(), width, height),
         m_renderer(m_windowManager.getWindow()),
         m_sceneManager(m_windowManager.getWindow()),
-        m_inputManager()
+        m_inputManager(),
+        m_resourceManager()
 
 {
     // Check if engine instance already exists
@@ -30,6 +31,7 @@ Engine::~Engine()
     m_windowManager.~WindowManager();
     m_inputManager.~InputManager();
     m_sceneManager.~SceneManager();
+    m_resourceManager.~ResourceManager();
     SDL_Quit();
 }
 
@@ -60,6 +62,11 @@ InputManager* Engine::getInputManager()
 SceneManager* Engine::getSceneManager()
 {
     return &m_sceneManager;
+}
+
+ResourceManager* Engine::getResourceManager()
+{
+    return &m_resourceManager;
 }
 
 float Engine::calculateDeltaTime()

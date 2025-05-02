@@ -108,35 +108,52 @@ GLuint Shader::getShaderProgram()
 // Mat4
 void Shader::setUniform(GLchar* name, glm::mat4 matrix)
 {
-    glUniformMatrix4fv(uniformLocations[hasGenericUniform(name)], 1, GL_FALSE, glm::value_ptr(matrix));
+    const GLchar* uniform = genericToUniformName(name);
+    if (uniform)
+    {
+        glUniformMatrix4fv(uniformLocations[uniform], 1, GL_FALSE, glm::value_ptr(matrix));
+    }
 
 }
 
 // Vec2
 void Shader::setUniform(GLchar* name, glm::vec2 vector)
 {
-    glUniform2f(uniformLocations[hasGenericUniform(name)], vector.x, vector.y);
-
+    const GLchar* uniform = genericToUniformName(name);
+    if (uniform)
+    {
+        glUniform2f(uniformLocations[uniform], vector.x, vector.y);
+    }
 }
 
 // Bool
 void Shader::setUniform(GLchar* name, bool value)
 {
-    glUniform1i(uniformLocations[hasGenericUniform(name)], (int)value);
-
+    const GLchar* uniform = genericToUniformName(name);
+    if (uniform)
+    {
+        glUniform1i(uniformLocations[uniform], (int)value);
+    }
 }
 
 // Int
 void Shader::setUniform(GLchar* name, int value)
 {
-    glUniform1i(uniformLocations[hasGenericUniform(name)], value);
-
+    const GLchar* uniform = genericToUniformName(name);
+    if (uniform)
+    {
+        glUniform1i(uniformLocations[uniform], value);
+    }
 }
 
 // Float
 void Shader::setUniform(GLchar* name, float value)
 {
-    glUniform1f(uniformLocations[hasGenericUniform(name)], value);
+    const GLchar* uniform = genericToUniformName(name);
+    if(uniform)
+    {
+        glUniform1f(uniformLocations[uniform], value);
+    }
 }
 
 void Shader::cacheUniformLocations(const GLuint& shader)
@@ -151,26 +168,32 @@ void Shader::cacheUniformLocations(const GLuint& shader)
         GLenum type;
 
         glGetActiveUniform(shader, i, sizeof(name), &length, &size, &type, name);
-        std::cout << "Uniform " << i << ": " << name << ": " << length << ": " << size << ": " << type << std::endl;
+        // std::cout << "Uniform " << i << ": " << name << ": " << length << ": " << size << ": " << type << std::endl;
         GLuint location = glGetUniformLocation(shader, name);
+        uniforms.push_back(name);
         uniformLocations[name] = location;
     }
 }
 
-const GLchar* Shader::hasGenericUniform(GLchar* name) const
+std::vector<std::string> Shader::getUniforms()
+{
+    return uniforms;
+}
+
+
+const GLchar* Shader::genericToUniformName(const GLchar* name)
 {
     for (auto& [uniformName, loc] : uniformLocations)
     {
         std::string lower = toLowerCase(uniformName);
         if (lower.find(name) != std::string::npos)
         {
-          return uniformName.c_str();
+            return uniformName.c_str();
         }
     }
-    std::cerr << "Error: Could not find shader uniform: " << name << std::endl;
-    return 0;
+    // std::cerr << "Error: Could not find shader uniform: " << name << std::endl;
+    return nullptr;
 }
-
 
 void Shader::bind()
 {
