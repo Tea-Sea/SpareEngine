@@ -1,7 +1,7 @@
 #include "headers/SceneManager.hpp"
 
 
-SceneManager::SceneManager(SDL_Window* window)
+SceneManager::SceneManager(ResourceManager& rm, SDL_Window* window) : m_resourceManager(rm)
 {
     currentScene = new Scene(0);
     
@@ -15,6 +15,13 @@ SceneManager::~SceneManager()
 bool SceneManager::loadScene(Scene* sceneToLoad)
 {
     currentScene = sceneToLoad;
+    return 1;
+}
+
+bool SceneManager::loadScene(std::string* sceneToLoad)
+{
+    // TODO: add scene loading by name
+    //currentScene = sceneToLoad;
     return 1;
 }
 

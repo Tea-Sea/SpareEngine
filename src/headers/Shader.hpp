@@ -47,7 +47,6 @@ public:
 
     void unbind();
 
-
 private:
     GLuint vertexShader;
 

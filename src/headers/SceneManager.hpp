@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Scene.hpp"
+#include "ResourceManager.hpp"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_main.h>
@@ -10,7 +11,7 @@ class SceneManager
 {
 	public:
 	
-		SceneManager(SDL_Window* window);
+		SceneManager(ResourceManager& rm, SDL_Window* window);
 
 		~SceneManager();
 
@@ -18,12 +19,16 @@ class SceneManager
 
 		bool loadScene(Scene* sceneToLoad);
 
+		bool loadScene(std::string* sceneToLoad);
+
 		void updateCurrentScene(float deltaTime);
 
 
 	private:
 
 	Scene* currentScene;
+
+	ResourceManager m_resourceManager;
 	// vector<Mesh> 
 
 	

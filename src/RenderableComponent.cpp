@@ -4,7 +4,7 @@
 RenderableComponent::RenderableComponent()
 {
     mesh = new Mesh();
-    material = new Material();
+    material = new Material(new Shader("orange"), new Texture());
     
 }
 
@@ -22,3 +22,14 @@ Material* RenderableComponent::getMaterial()
 {
     return material;
 }
+
+void RenderableComponent::attachMesh(Mesh* newMesh)
+{
+    mesh = newMesh;
+}
+
+void RenderableComponent::attachMaterial(Material* newMaterial)
+{
+    material = newMaterial;
+}
+

@@ -38,8 +38,17 @@ bool Scene::addObjectToList(GameObject* obj)
 
 bool Scene::removeObjectFromList(GameObject* objectToRemove)
 {
+    auto it = std::find_if(objectList.begin(), objectList.end(),
+    [&](const std::unique_ptr<GameObject>& obj) {
+        return obj.get() == objectToRemove;
+    });
 
-    return 1;
+    if (it != objectList.end()) {
+        objectList.erase(it);  // unique_ptr automatically deletes the object
+        return 1;
+    }
+
+return 0; // Object not found
 }
 
 GameObject& Scene::searchObjectByID(int ID)

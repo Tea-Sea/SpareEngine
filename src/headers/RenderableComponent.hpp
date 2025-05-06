@@ -14,6 +14,10 @@ class RenderableComponent
         Mesh* getMesh();
 
         Material* getMaterial();
+
+		void attachMesh(Mesh* newMesh);
+
+		void attachMaterial(Material* newMaterial);
 		
 	private:
 

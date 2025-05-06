@@ -7,7 +7,7 @@
 Shader::Shader(std::string fragPath)
 {
     fragPath = "assets/shaders/" + fragPath;
-    std::string vertexPath = "assets/shaders/vertex.glsl";
+    std::string vertexPath = "assets/shaders/vertex.vert";
 
     vertexShader = compileShader(GL_VERTEX_SHADER, loadShaderFromSrc(vertexPath));
     fragShader = compileShader(GL_FRAGMENT_SHADER, loadShaderFromSrc(fragPath));

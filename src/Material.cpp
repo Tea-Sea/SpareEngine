@@ -1,14 +1,15 @@
 #include "headers/Material.hpp"
 
-Material::Material()
+Material::Material(Shader* shader, Texture* texture)
+: shader(shader), texture(texture)
 {
-    shader = new Shader("vertex.glsl", "orange.glsl");
-    // texture = new Texture("container.jpg");
-    // std::unordered_map<std::string, UniformValue> uniforms;
+
 }
 
 Material::~Material()
 {
+    delete shader;
+    delete texture;
 }
 
 Shader* Material::getShader()
@@ -19,4 +20,24 @@ Shader* Material::getShader()
 Texture* Material::getTexture()
 {
     return texture;
+}
+
+GLuint Material::getShaderID()
+{
+    return shader->getShaderProgram();
+}
+
+GLuint Material::getTextureID()
+{
+    return texture->getTextureID();
+}
+
+void Material::setShader(Shader* newShader)
+{
+    shader = newShader;
+}
+
+void Material::setTexture(Texture* newTexture)
+{
+    texture = newTexture;
 }

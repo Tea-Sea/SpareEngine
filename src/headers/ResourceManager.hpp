@@ -8,28 +8,38 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_main.h>
 #include <vector>
+#include <unordered_map>
+#include <filesystem>
 
 class ResourceManager
 {
 	public:
-	
+
         ResourceManager();
 
 		~ResourceManager();
 
-        void LoadShader(std::string* name, std::string* vertexSrc, std::string* fragSrc);
+        void loadShader(std::string name, std::string vertexSrc, std::string fragSrc);
 
-        Shader* getShader(std::string* name);
+        Shader getShader(const std::string& name);
 
-        void LoadTexture(std::string* name, std::string* textureSrc);
+        void loadTexture(std::string name, std::string textureSrc);
 
-        Texture* getTexture(std::string* name);
+        Texture getTexture(const std::string& name);
 
-        void LoadMesh(std::string* name, std::string* meshSrc);
+        void loadMesh(std::string name, std::string meshSrc);
 
-        Mesh* getMesh(std::string* name);
+        Mesh getMesh(const std::string& name);
+
+        void loadAll();
 
 
 	private:
-	
+
+    std::unordered_map<std::string, Shader> shaderIDs;
+
+    std::unordered_map<std::string, Texture> textureIDs;
+
+    std::unordered_map<std::string, Mesh> meshIDs;
+
 };

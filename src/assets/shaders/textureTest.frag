@@ -1,5 +1,4 @@
 #version 460 core
-    precision mediump float;
 
     in vec2 TexCoord;
     out vec4 FragColour;

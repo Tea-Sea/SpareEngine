@@ -9,11 +9,21 @@ class Material
 	
 		Material();
 
+        Material(Shader* shader, Texture* texture);
+
 		~Material();
 
         Shader* getShader();
 
         Texture* getTexture();
+
+        GLuint getShaderID();
+
+        GLuint getTextureID();
+
+        void setShader(Shader* newShader);
+
+        void setTexture(Texture* newTexture);
 		
 	private:
 
