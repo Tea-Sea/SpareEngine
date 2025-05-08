@@ -22,38 +22,36 @@ struct Vector3
 
 struct Vertex
 {
-    glm::vec3 position;
-    glm::vec3 normal;
-    glm::vec2 uv;
+    glm::vec3 position = {0.0f,0.0f,0.0f};
+    glm::vec3 normal = {0.0f,0.0f,0.0f};
+    glm::vec2 uv = {0.0f,0.0f};
 };
 
 struct Transform 
 {
-    glm::vec3 position;
-    glm::quat rotation;
-    glm::vec3 scale;
+    glm::vec3 position = glm::vec3{0.0f};
+    glm::quat rotation = glm::quat{1.0f,0.0f,0.0f,0.0f};
+    glm::vec3 scale = glm::vec3{1.0f};
     
-    glm::vec3 eulerRotation;
+    glm::vec3 eulerRotation = glm::vec3{0.0f}; //optional
 
-    glm::mat4 getModelMatrix() const
+    glm::mat4 getModelMatrix()
     {
         glm::mat4 model = glm::mat4(1.0f);
 
         model = glm::translate(model, position);
-        // model *= glm::toMat4(rotation);
-        // model = glm::rotate(model, rotation);
         model *= glm::mat4_cast(rotation);
         model = glm::scale(model, scale);
 
         return model;
     }
 
-    Transform operator*(const Transform& other) const 
+    Transform operator*(const Transform& other)
     {
-        return Transform
-        {
-            position * other.position,
-            rotation * other.rotation,
-            scale * other.scale};
-        }
+        Transform result;
+        result.position = position + (rotation * other.position);
+        result.rotation = rotation * other.rotation;
+        result.scale = scale * other.scale;
+        return result;
+    }
 };

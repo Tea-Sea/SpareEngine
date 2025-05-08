@@ -2,19 +2,20 @@
 
 #include <stdexcept>
 
-Scene::Scene(int id)
+Scene::Scene(ResourceManager resources, int id)
 {
     ID = id;
 
     // Test purposes
-    Player* testPlayer = new Player(glm::vec3(-1, 1, -1), 0);
+    Player* testPlayer = new Player(glm::vec3(0, 0, 5), 0);
     Camera* testCamera = new Camera();
     TestObject* testObject = new TestObject(glm::vec3(0, 0, 0), 2);
     
     camera = testCamera;
-    
+
 
     testPlayer->addChild(testCamera);
+    testCamera->calculateViewMatrix();
 
     addObjectToList(testObject);
     addObjectToList(testPlayer);
@@ -105,4 +106,3 @@ void Scene::update(float deltaTime)
         objectList[i]->update(deltaTime);
     }
 }
-    

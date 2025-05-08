@@ -4,8 +4,8 @@
 RenderableComponent::RenderableComponent()
 {
     mesh = new Mesh();
-    material = new Material(new Shader("orange"), new Texture());
-    
+    material = new Material(new Shader("orange.frag"), new Texture("container.jpg"));
+
 }
 
 RenderableComponent::~RenderableComponent()

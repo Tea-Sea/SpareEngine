@@ -4,9 +4,10 @@
 #include "TestObject.hpp"
 #include "Player.hpp"
 #include "Camera.hpp"
+#include "ResourceManager.hpp"
 #include "../utils/RenderData.hpp"
 
-#include <glm/glm.hpp> 
+#include <glm/glm.hpp>
 #include <vector>
 #include <memory>
 #include <string>
@@ -14,9 +15,9 @@
 class Scene
 {
 	public:
-	
-		Scene(int id);
-		
+
+		Scene(ResourceManager resources, int id);
+
 		Scene(std::string src);
 
 		~Scene();
@@ -39,7 +40,7 @@ class Scene
 
 
 	private:
-	
+
 		int ID;
 
 		std::string name;

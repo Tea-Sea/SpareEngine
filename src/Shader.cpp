@@ -7,7 +7,7 @@
 Shader::Shader(std::string fragPath)
 {
     fragPath = "assets/shaders/" + fragPath;
-    std::string vertexPath = "assets/shaders/vertex.vert";
+    std::string vertexPath = "assets/shaders/default.vert";
 
     vertexShader = compileShader(GL_VERTEX_SHADER, loadShaderFromSrc(vertexPath));
     fragShader = compileShader(GL_FRAGMENT_SHADER, loadShaderFromSrc(fragPath));
@@ -106,7 +106,7 @@ GLuint Shader::getShaderProgram()
 }
 
 // Mat4
-void Shader::setUniform(GLchar* name, glm::mat4 matrix)
+void Shader::setUniform(const GLchar* name, glm::mat4 matrix)
 {
     const GLchar* uniform = genericToUniformName(name);
     if (uniform)
@@ -117,7 +117,7 @@ void Shader::setUniform(GLchar* name, glm::mat4 matrix)
 }
 
 // Vec2
-void Shader::setUniform(GLchar* name, glm::vec2 vector)
+void Shader::setUniform(const GLchar* name, glm::vec2 vector)
 {
     const GLchar* uniform = genericToUniformName(name);
     if (uniform)
@@ -127,7 +127,7 @@ void Shader::setUniform(GLchar* name, glm::vec2 vector)
 }
 
 // Bool
-void Shader::setUniform(GLchar* name, bool value)
+void Shader::setUniform(const GLchar* name, bool value)
 {
     const GLchar* uniform = genericToUniformName(name);
     if (uniform)
@@ -137,7 +137,7 @@ void Shader::setUniform(GLchar* name, bool value)
 }
 
 // Int
-void Shader::setUniform(GLchar* name, int value)
+void Shader::setUniform(const GLchar* name, int value)
 {
     const GLchar* uniform = genericToUniformName(name);
     if (uniform)
@@ -147,7 +147,7 @@ void Shader::setUniform(GLchar* name, int value)
 }
 
 // Float
-void Shader::setUniform(GLchar* name, float value)
+void Shader::setUniform(const GLchar* name, float value)
 {
     const GLchar* uniform = genericToUniformName(name);
     if(uniform)

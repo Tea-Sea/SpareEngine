@@ -28,4 +28,5 @@
         glm::quat rotationQuat = glm::angleAxis(angle, glm::vec3(0.72f, 1.0f, 0.28f));
 
         transform.rotation = glm::normalize(transform.rotation * rotationQuat);
+
     }

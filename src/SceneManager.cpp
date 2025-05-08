@@ -3,7 +3,7 @@
 
 SceneManager::SceneManager(ResourceManager& rm, SDL_Window* window) : m_resourceManager(rm)
 {
-    currentScene = new Scene(0);
+    currentScene = new Scene(m_resourceManager, 0);
     
     //currentScene->getObjectList();
 }

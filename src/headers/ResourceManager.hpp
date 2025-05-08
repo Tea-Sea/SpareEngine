@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Scene.hpp"
 #include "Shader.hpp"
 #include "Texture.hpp"
 #include "Mesh.hpp"
@@ -21,25 +20,25 @@ class ResourceManager
 
         void loadShader(std::string name, std::string vertexSrc, std::string fragSrc);
 
-        Shader getShader(const std::string& name);
+        Shader* getShader(const std::string& name);
 
         void loadTexture(std::string name, std::string textureSrc);
 
-        Texture getTexture(const std::string& name);
+        Texture* getTexture(const std::string& name);
 
         void loadMesh(std::string name, std::string meshSrc);
 
-        Mesh getMesh(const std::string& name);
+        Mesh* getMesh(const std::string& name);
 
         void loadAll();
 
 
 	private:
 
-    std::unordered_map<std::string, Shader> shaderIDs;
+    std::unordered_map<std::string, Shader> shaders;
 
-    std::unordered_map<std::string, Texture> textureIDs;
+    std::unordered_map<std::string, Texture> textures;
 
-    std::unordered_map<std::string, Mesh> meshIDs;
+    std::unordered_map<std::string, Mesh> meshes;
 
 };

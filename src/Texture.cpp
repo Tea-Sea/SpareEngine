@@ -33,7 +33,7 @@ Texture::Texture(std::string file)
 
     glBindTexture(GL_TEXTURE_2D, textureID);
     // glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 }
 

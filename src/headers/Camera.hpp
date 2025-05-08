@@ -14,20 +14,27 @@ class Camera : public GameObject
 		~Camera();
 
 		glm::mat4 getViewMatrix() const;
-		
+
 		glm::mat4 getProjectionMatrix() const;
 
 		glm::mat4 getViewProjectionMatrix() const;
 
+		glm::mat4 calculateViewMatrix();
+		
+		glm::mat4 calculateProjectionMatrix();
+
+		glm::mat4 calculateViewProjectionMatrix();
+
 		void setAspectRatio(float x, float y);
+		void update(float dealtaTime);
 		
 	private:
 
 		GameObject* attachedTo = nullptr;
 
-		glm::mat4 view;
+		glm::mat4 view = glm::mat4{0.0f};
 		
-		glm::mat4 projection;
+		glm::mat4 projection = glm::mat4{0.0f};
 
 		float pitch = 0.0f;
 		float fov = 60.0f;

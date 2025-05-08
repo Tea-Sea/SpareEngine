@@ -12,17 +12,19 @@ ResourceManager::~ResourceManager()
 
 void ResourceManager::loadShader(std::string name, std::string vertexSrc, std::string fragSrc)
 {
-    Shader shader(vertexSrc, fragSrc);
-    shaderIDs[name] = shader;
+    // Shader shader(vertexSrc, fragSrc);
+    // shaderIDs[name] = shader;
+    shaders.emplace(name, Shader(vertexSrc, fragSrc));
 }
 
-Shader ResourceManager::getShader(const std::string& name)
+Shader* ResourceManager::getShader(const std::string& name)
 {
-    auto result = shaderIDs.find(name);
-    if (result != shaderIDs.end()) {
-        return result->second;
+    auto result = shaders.find(name);
+    if (result != shaders.end()) {
+        return &result->second;
     }
     std::cerr << "Unable to find shader: " << name;
+    return nullptr;
 }
 
 void ResourceManager::loadTexture(std::string name, std::string textureSrc)
@@ -30,13 +32,14 @@ void ResourceManager::loadTexture(std::string name, std::string textureSrc)
     // TODO: Add texture loading
 }
 
-Texture ResourceManager::getTexture(const std::string& name)
+Texture* ResourceManager::getTexture(const std::string& name)
 {
-    auto result = textureIDs.find(name);
-    if (result != textureIDs.end()) {
-        return result->second;
+    auto result = textures.find(name);
+    if (result != textures.end()) {
+        return &result->second;
     }
     std::cerr << "Unable to find texture: " << name;
+    return nullptr;
 }
 
 void ResourceManager::loadMesh(std::string name, std::string meshSrc)
@@ -45,13 +48,14 @@ void ResourceManager::loadMesh(std::string name, std::string meshSrc)
 
 }
 
-Mesh ResourceManager::getMesh(const std::string& name)
+Mesh* ResourceManager::getMesh(const std::string& name)
 {
-    auto result = meshIDs.find(name);
-    if (result != meshIDs.end()) {
-        return result->second;
+    auto result = meshes.find(name);
+    if (result != meshes.end()) {
+        return &result->second;
     }
     std::cerr << "Unable to find texture: " << name;
+    return nullptr;
 }
 
 // For testing

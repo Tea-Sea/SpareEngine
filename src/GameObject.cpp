@@ -130,5 +130,12 @@ glm::mat4 GameObject::getModelMatrix()
 
 void GameObject::update(float deltaTime)
 {
+    if (parent)
+    {
+        transform = parent->transform * transform;
+    }
     transform.position += velocity * deltaTime;
+
+    std::cout << "obj: " << transform.position.x << ", " << transform.position.y << ", " << transform.position.z << ", " << std::endl;
+
 }

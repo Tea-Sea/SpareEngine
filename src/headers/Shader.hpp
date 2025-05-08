@@ -27,15 +27,15 @@ public:
 
     GLuint getShaderProgram();
 
-    void setUniform(GLchar* name, glm::mat4 matrix);
+    void setUniform(const GLchar* name, glm::mat4 matrix);
 
-    void setUniform(GLchar* name, glm::vec2 vector);
+    void setUniform(const GLchar* name, glm::vec2 vector);
 
-    void setUniform(GLchar* name, bool value);
+    void setUniform(const GLchar* name, bool value);
 
-    void setUniform(GLchar* name, int value);
+    void setUniform(const GLchar* name, int value);
 
-    void setUniform(GLchar* name, float value);
+    void setUniform(const GLchar* name, float value);
 
     void cacheUniformLocations(const GLuint& shader);
 

@@ -11,6 +11,8 @@ class Player : public GameObject
 		Player(glm::vec3 pos, int id);
 
 		~Player();
+
+		void update(float deltaTime);
 		
 	private:
 
